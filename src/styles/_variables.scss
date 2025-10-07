@@ -1,0 +1,39 @@
+:root {
+  /* === Основные фирменные цвета === */
+  --color-primary: #00632E;       /* Pantone 349 C — тёмно-зелёный */
+  --color-primary-light: #2AAA5C; /* Pantone 7739 C — светло-зелёный */
+  --color-accent: #BC1D18;        /* Pantone 7620 C — красный акцент */
+  --color-accent-light: #90D5AC;  /* Pantone 345 C — салатовый дополнительный */
+  --color-black: #000000;         /* Pantone Black C */
+
+  /* === Фон и текст === */
+  --font-main: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-color-main: #ffffff;
+  --font-color-alt: #f6f7f8;
+  --color-text: #0a0a0a;
+  --color-text-muted: #707070;
+
+  /* === Состояния и границы === */
+  --color-success: #2AAA5C;
+  --color-error: #BC1D18;
+  --color-border: #e2e2e2;
+
+  /* === Состояния и границы === */
+  --paddingXL: 24px;
+  --paddingL: 20px;
+  --paddingM: 16px;
+
+  /* === Общие UI-значения === */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --shadow-soft: 0 4px 10px rgba(0, 0, 0, 0.1);
+  --shadow-hard: 0 6px 20px rgba(0, 0, 0, 0.2);
+
+  /* === Градиент по фирменным тонам === */
+  --gradient-brand: linear-gradient(
+                  135deg,
+                  var(--color-primary) 0%,
+                  var(--color-accent) 100%
+  );
+}

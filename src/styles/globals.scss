@@ -1,0 +1,36 @@
+@layer reset, base, components, utilities;
+
+@layer reset {
+  html, body, #app {
+    height: 100%;
+    font-family: var(--font-main);
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  ul,
+  ol {
+    list-style: none;
+  }
+
+  a {
+    color: blue;
+    text-decoration: none;
+  }
+}
+
+@layer base {
+  body {
+    background: var(--bg);
+    color: var(--text);
+  }
+  .container { @include container; }
+}
+
+/* Пример BEM-структуры */
+@layer components {
+  .block {
+    &__elem { }
+    &--mod { }
+  }
+}

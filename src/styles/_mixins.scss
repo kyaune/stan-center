@@ -1,0 +1,8 @@
+@mixin respond($min) {
+  @media (min-width: $min) { @content; }
+}
+
+@mixin container {
+  width: min(100% - 32px, 1200px);
+  margin-inline: auto;
+}
