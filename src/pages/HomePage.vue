@@ -1,7 +1,7 @@
 <template>
   <main class="home">
     <section class="home__banner">
-      banner carousel
+      <banner-carousel />
     </section>
     <section class="home__favourites">
       fav articles
@@ -14,4 +14,10 @@
   </main>
 </template>
 <script setup lang="ts">
+import BannerCarousel from "@/components/bannerCarousel.vue";
 </script>
+<style lang="scss" scoped>
+.home__banner {
+  max-height: 600px;
+}
+</style>

@@ -1,11 +1,117 @@
-<script setup lang="ts">
+<script setup>
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import {Autoplay, Navigation, Pagination } from 'swiper/modules'
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
+import articles from '@/dummydata/articles'
+
+const modules = [ Autoplay, Navigation, Pagination];
+const slides = articles.filter(a => a.favourite)
 </script>
 
 <template>
-
+  <Swiper
+      :modules="modules"
+      :loop="true"
+      :autoplay="{ delay: 5000 }"
+      :pagination="{ clickable: true }"
+      navigation
+      :speed="800"
+      effect="slide"
+      class="banner-carousel"
+  >
+    <SwiperSlide v-for="article in slides" :key="article.id" class="banner-carousel__slide">
+      <img :src="article.img" alt="" class="banner-carousel__img" />
+      <div class="banner-carousel__content">
+        <span class="banner-carousel__tag">{{ article.tag.toUpperCase() }}</span>
+        <h2 class="banner-carousel__title">{{ article.title }}</h2>
+        <p class="banner-carousel__subtitle">{{ article.subtitle }}</p>
+      </div>
+    </SwiperSlide>
+  </Swiper>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
+.banner-carousel {
+  position: relative;
+  width: 100%;
+  height: 600px;
 
+  &__slide {
+    position: relative;
+    color: #fff;
+  }
+
+  &__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7);
+    z-index: -1;
+  }
+
+  &__content {
+    padding: 5rem;
+    max-width: 700px;
+  }
+
+  &__tag {
+    background: #d21b1b;
+    padding: 0.3rem 1rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    font-weight: 700;
+    line-height: 60px;
+    margin: 1rem 0;
+  }
+
+  &__subtitle {
+    //line-height: 1.4;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: #000;
+    background: #fff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    &::after {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    & svg {
+      width: 50%;
+      height: 50%;
+    }
+  }
+
+  .swiper-pagination-bullet {
+    background: #fff;
+    opacity: 0.5;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+
+  .swiper-pagination-bullet-active {
+    width: 36px;
+    border-radius: 6px;
+    opacity: 1;
+  }
+}
 </style>
