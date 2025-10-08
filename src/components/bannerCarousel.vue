@@ -69,12 +69,13 @@ const slides = articles.filter(a => a.favourite)
 
   &__title {
     font-weight: 700;
-    line-height: 60px;
+    line-height: 55px;
     margin: 1rem 0;
   }
 
   &__subtitle {
     //line-height: 1.4;
+    font-size: 20px;
   }
 
   .swiper-button-prev,

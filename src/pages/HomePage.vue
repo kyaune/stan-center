@@ -4,7 +4,7 @@
       <banner-carousel />
     </section>
     <section class="home__favourites">
-      fav articles
+      <FavouriteArticlesList />
     </section>
     <div class="home__content">
     <section class="home__articles"> articles</section>
@@ -15,6 +15,7 @@
 </template>
 <script setup lang="ts">
 import BannerCarousel from "@/components/bannerCarousel.vue";
+import FavouriteArticlesList from "@/components/articles/FavouriteArticlesList.vue";
 </script>
 <style lang="scss" scoped>
 .home__banner {
