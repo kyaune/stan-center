@@ -65,6 +65,7 @@ a {
   background: var(--color-primary);
   color: var(--font-color-main);
   padding: var(--paddingL) var(--paddingM);
+  font-size: var(--font-size-m);
   max-height: 80px;
   display: flex;
   flex-direction: row;
@@ -123,7 +124,7 @@ a {
 .header__pages {
   display: flex;
   align-items: center;
-  gap: var(--paddingL);
+  gap: calc(var(--paddingXL) * 1.5);
 }
 
 .header__actions {
