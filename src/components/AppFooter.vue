@@ -6,9 +6,13 @@
       </div>
 
       <nav class="site-footer__nav" aria-label="Навигация по сайту">
-        <a href="#" class="site-footer__link">О нас</a>
+        <RouterLink :to="{ name: 'about' }" class="site-footer__link">
+          О нас
+        </RouterLink>
         <span class="site-footer__divider">|</span>
-        <a href="#" class="site-footer__link">Контакты</a>
+        <RouterLink :to="{ name: 'contacts' }" class="site-footer__link">
+          Контакты
+        </RouterLink>
       </nav>
     </div>
   </footer>

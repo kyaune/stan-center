@@ -7,14 +7,25 @@ import { RouterView } from 'vue-router'
 </script>
 
 <template>
-<header>
-  <Header />
-</header>
-  <main>
-    <RouterView />
-  </main>
-  <AppFooter />
+  <div class="app">
+    <header>
+      <Header />
+    </header>
+    <main class="app__main">
+      <RouterView />
+    </main>
+    <AppFooter />
+  </div>
 </template>
 
 <style scoped>
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app__main {
+  flex: 1 0 auto;
+}
 </style>
