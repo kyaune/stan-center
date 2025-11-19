@@ -24,6 +24,7 @@ const slides = articles.filter(a => a.favourite)
   >
     <SwiperSlide v-for="article in slides" :key="article.id" class="banner-carousel__slide">
       <img :src="article.img" alt="" class="banner-carousel__img" />
+      <div class="banner-carousel__overlay"></div>
       <div class="banner-carousel__content">
         <span class="banner-carousel__tag">{{ article.tag.toUpperCase() }}</span>
         <h2 class="banner-carousel__title">{{ article.title }}</h2>
@@ -50,7 +51,6 @@ const slides = articles.filter(a => a.favourite)
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: brightness(0.7);
     z-index: -1;
   }
 
@@ -98,6 +98,14 @@ const slides = articles.filter(a => a.favourite)
       width: 50%;
       height: 50%;
     }
+  }
+
+  .swiper-button-next {
+    right: 18px;
+  }
+
+  .swiper-button-prev {
+    left: 18px;
   }
 
   .swiper-pagination-bullet {

@@ -1,13 +1,20 @@
 <script setup lang="ts">
-defineProps({
+const props = defineProps<{
   article: {
-    type: Object,
-    required: true,
-  },
-});
+    id: number
+    title: string
+    subtitle?: string
+    tag?: string
+    img: string
+  }
+}>()
 </script>
 
 <template>
+  <RouterLink
+      class="favourite-article"
+      :to="{ name: 'article', params: { id: props.article.id } }"
+  >
   <article class="favourite-article">
     <div class="favourite-article__image-wrapper">
       <img
@@ -21,6 +28,7 @@ defineProps({
       <h3 class="favourite-article__title">{{ article.title }}</h3>
     </div>
   </article>
+  </RouterLink>
 </template>
 
 <style scoped lang="scss">
@@ -54,14 +62,26 @@ defineProps({
   &__content {
     display: flex;
     align-items: flex-start;
-    padding: 1rem 1.25rem 1.5rem;
+    padding: 1rem 1.25rem 1.5rem 1.25rem;
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background-color: #00793d;
+      border-radius: 2px;
+    }
   }
 
   &__quote {
     font-size: 22px;
     font-weight: bold;
     color: #00793d;
-    margin-right: 0.4rem;
+    margin-right: 0.5rem;
     line-height: 1;
   }
 
@@ -70,8 +90,6 @@ defineProps({
     font-weight: 700;
     line-height: 1.4;
     color: #004225;
-    border-left: 4px solid #00793d;
-    padding-left: 0.75rem;
   }
 }
 </style>

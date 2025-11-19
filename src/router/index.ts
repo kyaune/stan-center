@@ -1,6 +1,23 @@
-import {createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
+import HomePage from '@/pages/HomePage.vue'
+import ArticlePage from '@/pages/ArticlePage.vue'
 
-export default createRouter({
+const routes = [
+    {
+        path: '/',
+        name: 'home',
+        component: HomePage,
+    },
+    {
+        path: '/article/:id',
+        name: 'article',
+        component: ArticlePage,
+    },
+]
+
+const router = createRouter({
     history: createWebHistory(),
-    routes: []
+    routes,
 })
+
+export default router

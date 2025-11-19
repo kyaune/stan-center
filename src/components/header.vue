@@ -48,11 +48,11 @@ const navLinks = [
 ]
 
 const socialLinks = [
-  { label: 'Телеграм', src: logoTg, alt: 'logo tg', href: '#' },
-  { label: 'Тикток', src: logoTt, alt: 'logo tt', href: '#' },
-  { label: 'Ютуб', src: logoYt, alt: 'logo yt', href: '#' },
-  { label: 'Вконтакте', src: logoVk, alt: 'logo vk', href: '#' },
-  { label: 'Одноклассники', src: logoOk, alt: 'logo ok', href: '#' }
+  { label: 'Телеграм', src: logoTg, alt: 'logo tg', href: 'https://t.me/stan_center' },
+  { label: 'Тикток', src: logoTt, alt: 'logo tt', href: 'https://www.tiktok.com/@stan_center' },
+  { label: 'Ютуб', src: logoYt, alt: 'logo yt', href: 'https://youtube.com/@stan_center' },
+  { label: 'Вконтакте', src: logoVk, alt: 'logo vk', href: 'https://vk.com/stan_center' },
+  { label: 'Одноклассники', src: logoOk, alt: 'logo ok', href: 'https://ok.ru/stan.center' }
 ]
 </script>
 

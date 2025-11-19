@@ -1,6 +1,9 @@
 <script setup>
 import HomePage from "@/pages/HomePage.vue";
 import Header from "@/components/header.vue";
+import AppFooter from '@/components/AppFooter.vue'
+import { RouterView } from 'vue-router'
+
 </script>
 
 <template>
@@ -8,11 +11,9 @@ import Header from "@/components/header.vue";
   <Header />
 </header>
   <main>
-    <HomePage />
+    <RouterView />
   </main>
-  <footer>
-    footer
-  </footer>
+  <AppFooter />
 </template>
 
 <style scoped>

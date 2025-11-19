@@ -3,6 +3,6 @@
 }
 
 @mixin container {
-  width: min(100% - 32px, 1200px);
+  width: calc(100% - 32px); // 16px слева + 16px справа
   margin-inline: auto;
 }
