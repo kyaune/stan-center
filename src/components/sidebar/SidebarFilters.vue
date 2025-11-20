@@ -45,9 +45,12 @@ const mainQuote = {
           :key="country"
           class="sidebar-countries__item"
         >
-          <button type="button" class="sidebar-link">
+          <RouterLink
+            :to="{ name: 'tag', params: { slug: country } }"
+            class="sidebar-link"
+          >
             {{ country }}
-          </button>
+          </RouterLink>
         </li>
       </ul>
     </section>
@@ -61,9 +64,12 @@ const mainQuote = {
           :key="topic"
           class="sidebar-topics__item"
         >
-          <button type="button" class="sidebar-chip">
+          <RouterLink
+            :to="{ name: 'tag', params: { slug: topic } }"
+            class="sidebar-chip"
+          >
             {{ topic }}
-          </button>
+          </RouterLink>
         </li>
       </ul>
     </section>
@@ -201,11 +207,11 @@ const mainQuote = {
 
 .sidebar-topics {
   list-style: none;
-  margin: 0;
   padding: 0;
+  margin: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--paddingS);
+  gap: var(--paddingXL);
 }
 
 .sidebar-topics__item {

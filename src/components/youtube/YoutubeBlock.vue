@@ -53,7 +53,7 @@ const youtubeUrl = `https://www.youtube.com/embed/${videoId}`;
 
 .youtube__title {
   margin: 0 0 4px;
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: var(--color-text);
 }

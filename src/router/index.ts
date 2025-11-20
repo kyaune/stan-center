@@ -14,9 +14,14 @@ const routes = [
         component: HomePage,
     },
     {
-        path: '/article/:id',
-        name: 'article',
+        path: '/statiya/:id',
+        name: 'statiya',
         component: ArticlePage,
+    },
+    {
+        path: '/tag/:slug',
+        name: 'tag',
+        component: TagPage,
     },
     {
         path: '/analitika',

@@ -55,9 +55,13 @@ const TAG_DATA_VALUES: Record<string, string> = {
 
 const route = useRoute()
 
-const tagSlug = computed(() => route.meta.tagSlug as string)
+const tagSlug = computed(() => {
+  return (route.meta.tagSlug as string) || (route.params.slug as string) || ''
+})
 
-const title = computed(() => TAG_TITLES[tagSlug.value] ?? 'Статьи')
+const title = computed(
+    () => TAG_TITLES[tagSlug.value] ?? (tagSlug.value || 'Статьи'),
+)
 
 const previewArticles = computed(() => {
   const tagValue = TAG_DATA_VALUES[tagSlug.value]

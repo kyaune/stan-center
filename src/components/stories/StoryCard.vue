@@ -9,7 +9,7 @@ defineProps<{
 <template>
   <RouterLink
       class="story-card"
-      :to="{ name: 'article', params: { id } }"
+      :to="{ name: 'statiya', params: { id } }"
   >
   <article class="story-card">
     <div class="story-card__image-wrapper">

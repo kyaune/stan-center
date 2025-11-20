@@ -13,7 +13,7 @@ const props = defineProps<{
 <template>
   <RouterLink
       class="favourite-article"
-      :to="{ name: 'article', params: { id: props.article.id } }"
+      :to="{ name: 'statiya', params: { id: props.article.id } }"
   >
   <article class="favourite-article">
     <div class="favourite-article__image-wrapper">

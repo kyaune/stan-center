@@ -60,7 +60,7 @@ const stories = computed(() => {
 .stories__title {
   margin-top: 0;
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   line-height: 1.2;
   color: var(--color-text);
 }
