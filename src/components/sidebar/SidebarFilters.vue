@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import dummyimg from '@/assets/dummyimg.jpg';
+import { RouterLink } from 'vue-router';
 const countries = [
   "Россия",
   "Белоруссия",
@@ -18,11 +20,12 @@ type Expert = {
   id: number;
   name: string;
   role: string;
+  avatar: string;
 };
 
 const experts: Expert[] = [
-  { id: 1, name: "Имя Фамилия", role: "Должность" },
-  { id: 2, name: "Имя Фамилия", role: "Должность" },
+  { id: 1, name: "Имя Фамилия", role: "Должность", avatar: dummyimg },
+  { id: 2, name: "Имя Фамилия", role: "Должность", avatar: dummyimg },
 ];
 
 const mainQuote = {
@@ -75,7 +78,11 @@ const mainQuote = {
           :key="expert.id"
           class="sidebar-expert"
         >
-          <div class="sidebar-expert__avatar" />
+          <img
+            :src="expert.avatar"
+            :alt="`Фото эксперта ${expert.name}`"
+            class="sidebar-expert__avatar"
+          />
 
           <div class="sidebar-expert__body">
             <h4 class="sidebar-expert__name">
@@ -88,15 +95,19 @@ const mainQuote = {
         </article>
       </div>
 
-      <button type="button" class="sidebar-button">
+      <RouterLink :to="{ name: 'experti' }" class="sidebar-button">
         Все эксперты
-      </button>
+      </RouterLink>
     </section>
 
     <!-- Цитаты -->
     <section class="sidebar-block sidebar-block--quotes">
       <div class="sidebar-quote">
-        <div class="sidebar-quote__image" />
+        <img
+          :src="dummyimg"
+          alt="Фото к цитате"
+          class="sidebar-quote__image"
+        />
         <div class="sidebar-quote__text-block">
           <p class="sidebar-quote__text">
             {{ mainQuote.text }}
@@ -107,9 +118,9 @@ const mainQuote = {
         </p>
       </div>
 
-      <button type="button" class="sidebar-button">
+      <RouterLink :to="{ name: 'citati' }" class="sidebar-button">
         Все цитаты
-      </button>
+      </RouterLink>
     </section>
   </aside>
 </template>
@@ -244,12 +255,12 @@ const mainQuote = {
     transform 0.15s ease;
 }
 
-.sidebar-expert:hover {
-  background-color: #f6f7f8;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-soft);
-  transform: translateY(-1px);
-}
+//.sidebar-expert:hover {
+//  background-color: #f6f7f8;
+//  border-radius: var(--radius-md);
+//  box-shadow: var(--shadow-soft);
+//  transform: translateY(-1px);
+//}
 
 .sidebar-expert__avatar {
   flex-shrink: 0;
@@ -257,7 +268,10 @@ const mainQuote = {
   height: 68px;
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
-  background: #eef2f6;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  background-color: #eef2f6;
 }
 
 .sidebar-expert__name {
@@ -277,7 +291,6 @@ const mainQuote = {
 .sidebar-button {
   margin-top: var(--paddingL);
   display: block;
-  width: 100%;
   border: none;
   border-radius: var(--radius-sm);
   padding: 12px 16px;
@@ -311,29 +324,49 @@ const mainQuote = {
     transform 0.15s ease;
 }
 
-.sidebar-quote:hover {
-  box-shadow: var(--shadow-soft);
-  transform: translateY(-1px);
-}
+//.sidebar-quote:hover {
+//  box-shadow: var(--shadow-soft);
+//  transform: translateY(-1px);
+//}
 
 .sidebar-quote__image {
   width: 100%;
   height: 180px;
   border-radius: var(--radius-md);
-  background: #dde5ef;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  background-color: #dde5ef;
 }
 
 .sidebar-quote__text-block {
-  border-radius: var(--radius-sm);
+  position: relative;
+  border-radius: var(--radius-md);
   padding: var(--paddingM);
-  background: #b0b0b0;
+  background: rgba(144, 213, 172, 0.18); // мягкий фон в фирменных тонах
+  overflow: hidden;
+}
+
+.sidebar-quote__text-block::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(
+    180deg,
+    var(--color-primary) 0%,
+    var(--color-primary-light) 100%
+  );
 }
 
 .sidebar-quote__text {
   margin: 0;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #ffffff;
+  line-height: 1.5;
+  color: var(--color-text);
 }
 
 .sidebar-quote__meta {

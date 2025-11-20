@@ -2,20 +2,43 @@
   <div class="header__container">
     <div class="header__logo">
       <a class="header__brand" href="/">
-        <img class="header__logo" src="" alt="СТАН.Центр" />
+        <img class="header__logo" src="@/assets/stan_logo.png" alt="СТАН.Центр" />
       </a>
     </div>
     <div class="header__navs">
-    <nav class="header__pages" aria-label="Основная навигация">
-      <div v-for="({ text, href }, index) in navLinks" :key="index" class="header__nav-item">
-        <a
+      <nav class="header__pages">
+        <RouterLink
+            :to="{ name: 'analitika' }"
             class="header__nav-link"
-            :href="href"
+            :class="{ 'header__nav-link--active': isActive('analitika') }"
         >
-          {{ text }}
-        </a>
-      </div>
-    </nav>
+          Аналитика
+        </RouterLink>
+
+        <RouterLink
+            :to="{ name: 'intervyu' }"
+            class="header__nav-link"
+            :class="{ 'header__nav-link--active': isActive('intervyu') }"
+        >
+          Интервью
+        </RouterLink>
+
+        <RouterLink
+            :to="{ name: 'mneniya' }"
+            class="header__nav-link"
+            :class="{ 'header__nav-link--active': isActive('mneniya') }"
+        >
+          Мнения
+        </RouterLink>
+
+        <RouterLink
+            :to="{ name: 'obzory' }"
+            class="header__nav-link"
+            :class="{ 'header__nav-link--active': isActive('obzory') }"
+        >
+          Обзоры
+        </RouterLink>
+      </nav>
     </div>
     <div class="header__actions" aria-label="Соцсети">
       <a
@@ -34,11 +57,17 @@
 </template>
 
 <script setup lang="ts">
+import { RouterLink, useRoute } from 'vue-router'
+
 import logoTg from '@/assets/logos/logo_tg_1.png'
 import logoTt from '@/assets/logos/logo_tt_1.png'
 import logoYt from '@/assets/logos/logo_yt_1.png'
 import logoVk from '@/assets/logos/logo_vk_1.png'
 import logoOk from '@/assets/logos/logo_ok_1.png'
+
+const route = useRoute()
+
+const isActive = (name: string) => route.name === name
 
 const navLinks = [
   { text: 'Аналитика', href: '/analytics' },
@@ -94,6 +123,7 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 150px;
 }
 
 .header__navs {
@@ -153,6 +183,7 @@ a {
   display: flex;
   flex-direction: row;
   gap: var(--paddingXL);
+  padding-right: 60px;
 }
 
 .header__social-link {

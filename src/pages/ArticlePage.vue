@@ -16,13 +16,17 @@
             </p>
 
             <div class="article__meta-row">
-              <button type="button" class="article__tag-link">
+              <RouterLink
+                  v-if="articleTagRouteName"
+                  :to="{ name: articleTagRouteName }"
+                  class="article__tag-link"
+              >
                 {{ article.tag }}
-              </button>
+              </RouterLink>
               <span class="article__meta-dot">·</span>
               <span class="article__meta-date">
-                {{ articleMetaDate }}
-              </span>
+    {{ articleMetaDate }}
+  </span>
             </div>
           </div>
 
@@ -162,7 +166,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 import ContentWithSidebar from '@/components/layout/ContentWithSidebar.vue'
 import SidebarFilters from '@/components/sidebar/SidebarFilters.vue'
 import articles from '@/dummydata/articles'
@@ -173,6 +177,18 @@ const article = computed(() => {
   const id = Number(route.params.id)
   const found = articles.find((a) => a.id === id)
   return found ?? articles[0]
+})
+
+const TAG_ROUTE_BY_VALUE: Record<string, string> = {
+  'аналитика': 'analitika',
+  'интервью': 'intervyu',
+  'мнения': 'mneniya',
+  'обзоры': 'obzory'
+}
+
+const articleTagRouteName = computed(() => {
+  const tag = article.value?.tag?.toLowerCase?.()
+  return tag ? TAG_ROUTE_BY_VALUE[tag] : undefined
 })
 
 const articleMetaDate = '31 июля 2025 г., 14:52'

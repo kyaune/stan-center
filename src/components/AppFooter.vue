@@ -6,11 +6,11 @@
       </div>
 
       <nav class="site-footer__nav" aria-label="Навигация по сайту">
-        <RouterLink :to="{ name: 'about' }" class="site-footer__link">
+        <RouterLink :to="{ name: 'o-nas' }" class="site-footer__link">
           О нас
         </RouterLink>
         <span class="site-footer__divider">|</span>
-        <RouterLink :to="{ name: 'contacts' }" class="site-footer__link">
+        <RouterLink :to="{ name: 'contacti' }" class="site-footer__link">
           Контакты
         </RouterLink>
       </nav>
