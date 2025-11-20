@@ -1,9 +1,9 @@
 <template>
   <div class="header__container">
     <div class="header__logo">
-      <a class="header__brand" href="/">
+      <RouterLink class="header__brand" :to="{name: 'home'}">
         <img class="header__logo" src="@/assets/stan_logo.png" alt="СТАН.Центр" />
-      </a>
+      </RouterLink>
     </div>
     <div class="header__navs">
       <nav class="header__pages">
