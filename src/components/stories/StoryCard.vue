@@ -46,7 +46,7 @@ defineProps<{
 .story-card__image-wrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 5; // стабильная высота карточки
+  aspect-ratio: 1 / 1; // более компактная квадратная карточка
 }
 
 .story-card__image {

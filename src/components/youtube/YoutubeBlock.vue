@@ -10,8 +10,18 @@ const youtubeUrl = `https://www.youtube.com/embed/${videoId}`;
       <header class="youtube__header">
         <h2 class="youtube__title">Мы на YouTube</h2>
         <p class="youtube__subtitle">
-          Подписывайтесь на наш канал и смотрите аналитические видео и интервью.
+          Подписывайтесь
+          <a
+              href="https://youtube.com/@stan_center"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="about__link"
+          >
+            на наш канал
+          </a>
+          и смотрите аналитические видео и интервью.
         </p>
+
       </header>
 
       <div class="youtube__video-wrapper">
@@ -34,7 +44,7 @@ const youtubeUrl = `https://www.youtube.com/embed/${videoId}`;
 }
 
 .youtube__inner {
-  width: 100%;
+  width: 70%;
 }
 
 .youtube__header {
@@ -51,7 +61,7 @@ const youtubeUrl = `https://www.youtube.com/embed/${videoId}`;
 .youtube__subtitle {
   margin: 0;
   font-size: 0.9rem;
-  color: var(--color-text-muted);
+  color: var(--color-text);
 }
 
 /* обёртка для 16:9 */
@@ -75,5 +85,16 @@ const youtubeUrl = `https://www.youtube.com/embed/${videoId}`;
   width: 100%;
   height: 100%;
   border: none;
+}
+
+.about__link {
+  font-size: 0.95rem;
+  color: var(--color-primary);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.about__link:hover {
+  text-decoration: underline;
 }
 </style>

@@ -34,11 +34,11 @@
 </template>
 
 <script setup lang="ts">
-import logoTg from '@/assets/logos/logo_tg.png'
-import logoTt from '@/assets/logos/logo_tt.png'
-import logoYt from '@/assets/logos/logo_yt.png'
-import logoVk from '@/assets/logos/logo_vk.png'
-import logoOk from '@/assets/logos/logo_ok.png'
+import logoTg from '@/assets/logos/logo_tg_1.png'
+import logoTt from '@/assets/logos/logo_tt_1.png'
+import logoYt from '@/assets/logos/logo_yt_1.png'
+import logoVk from '@/assets/logos/logo_vk_1.png'
+import logoOk from '@/assets/logos/logo_ok_1.png'
 
 const navLinks = [
   { text: 'Аналитика', href: '/analytics' },
@@ -58,12 +58,14 @@ const socialLinks = [
 
 <style lang="scss" scoped>
 a {
-  color: var(--font-color-main);
+  color: var(--color-text);
 }
 
 .header__container {
-  background: var(--color-primary);
-  color: var(--font-color-main);
+  background: #ffffff;
+  color: var(--color-text);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid var(--color-border);
   padding: var(--paddingL) var(--paddingM);
   font-size: var(--font-size-m);
   max-height: 80px;
@@ -71,6 +73,21 @@ a {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+}
+
+.header__container::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--color-primary) 0%,
+    var(--color-primary-light) 100%
+  );
+  pointer-events: none;
 }
 
 .header__logo {
@@ -97,14 +114,16 @@ a {
   font-size: 18px;
   font-weight: 500;
   text-decoration: none;
-  color: var(--font-color-main);
-  transition: opacity 0.2s ease;
+  color: var(--color-text);
+  transition: color 0.2s ease, transform 0.15s ease;
 
   &:hover {
-    opacity: 0.7;
+    color: var(--color-primary);
+    transform: translateY(-1px);
   }
 
   &--active {
+    color: var(--color-primary);
     font-weight: 700;
     position: relative;
 
@@ -115,7 +134,7 @@ a {
       left: 0;
       width: 100%;
       height: 2px;
-      background-color: var(--font-color-main);
+      background-color: var(--color-primary);
     }
   }
 }
@@ -125,17 +144,29 @@ a {
   display: flex;
   align-items: center;
   gap: calc(var(--paddingXL) * 1.5);
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: rgba(144, 213, 172, 0.15);
 }
 
 .header__actions {
   display: flex;
   flex-direction: row;
-  gap: var(--paddingS);
+  gap: var(--paddingXL);
+}
+
+.header__social-link {
+  color: var(--color-text);
+
+  &:hover {
+    color: var(--color-primary); // 👈 станет фирменно зелёной
+  }
 }
 
 .link__image {
-  height: 48px;
-  width: 48px;
+  height: 36px;
+  width: 36px;
+  display: block;
 }
 
 </style>
