@@ -15,7 +15,7 @@ const slides = articles.filter(a => a.favourite)
   <Swiper
       :modules="modules"
       :loop="true"
-      :autoplay="{ delay: 5000 }"
+      :autoplay="{ delay: 10000 }"
       :pagination="{ clickable: true }"
       navigation
       :speed="800"
