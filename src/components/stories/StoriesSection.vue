@@ -1,33 +1,31 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import articles from "@/dummydata/articles";
+import stories from "@/dummydata/stories";
 import StoryCard from "./StoryCard.vue";
 
-type Article = {
+type StoryItem = {
   id: number;
-  title: string;
+  story: string;
   img: string;
 };
 
 const props = defineProps<{
-  items?: Article[];
+  items?: StoryItem[];
 }>();
-//todo: переделать на реальные артиксл
-// const stories = computed(() => props.items ?? articles.slice(0, 8));
 
-const stories = computed(() => {
-  const first = articles[0];
-
-  if (!first) {
-    return [];
-  }
-
-  return Array.from({ length: 9 }, (_, index) => ({
-    id: index + 1,
-    title: first.title,
-    img: first.img,
-  }));
-});
+// const storiesArray = computed(() => {
+//   const first = stories[0];
+//
+//   if (!first) {
+//     return [];
+//   }
+//
+//   return Array.from({ length: 9 }, (_, index) => ({
+//     id: index + 1,
+//     story: story,
+//     img: img,
+//   }));
+// });
 </script>
 
 <template>
@@ -41,7 +39,7 @@ const stories = computed(() => {
           v-for="story in stories"
           :key="story.id"
           :id="story.id"
-          :title="story.title"
+          :story="story.story"
           :img="story.img"
       />
     </div>
@@ -60,7 +58,7 @@ const stories = computed(() => {
 .stories__title {
   margin-top: 0;
   font-weight: 700;
-  font-size: 2.5rem;
+  font-size: 2rem;
   line-height: 1.2;
   color: var(--color-text);
 }

@@ -18,6 +18,7 @@
 
 <style scoped lang="scss">
 .content-section {
+  margin-top: -20px;
   padding-block: var(--paddingXL);
   font-family: var(--font-main);
 }

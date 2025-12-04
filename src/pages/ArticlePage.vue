@@ -5,16 +5,6 @@
         <article class="article__content">
           <!-- Крупная обложка -->
           <div class="article__cover">
-            <img
-              :src="article.img"
-              :alt="article.title"
-              class="article__cover-img"
-            />
-
-            <p class="article__cover-caption">
-              Шавкат Мирзиёев и Владимир Путин в Кремле. Иллюстрация: Kremlin.ru
-            </p>
-
             <div class="article__meta-row">
               <RouterLink
                   v-if="articleTagRouteName"
@@ -22,6 +12,20 @@
                   class="article__tag-link"
               >
                 {{ article.tag }}
+              </RouterLink>
+              <span class="article__meta-dot">·</span>
+              <RouterLink
+                  :to="{ name: 'tag', params: { slug: article.countries } }"
+                  class="article__tag-link"
+              >
+                {{ article.countries }}
+              </RouterLink>
+              <span class="article__meta-dot">·</span>
+              <RouterLink
+                  :to="{ name: 'tag', params: { slug: article.themes } }"
+                  class="article__tag-link"
+              >
+                {{ article.themes }}
               </RouterLink>
               <span class="article__meta-dot">·</span>
               <span class="article__meta-date">
@@ -38,6 +42,15 @@
 
             <p class="article__subtitle">
               {{ article.subtitle }}
+            </p>
+            <img
+                :src="article.img"
+                :alt="article.title"
+                class="article__cover-img"
+            />
+
+            <p class="article__cover-caption">
+              Шавкат Мирзиёев и Владимир Путин в Кремле. Иллюстрация: Kremlin.ru
             </p>
           </header>
 
@@ -73,15 +86,14 @@
               внешней политики Москвы были его личным мнением.
             </p>
 
-            <!-- Встроенная картинка + подпись (мок) -->
-<!--            <figure class="article__figure">-->
-<!--              <div class="article__figure-img">-->
-<!--                <img src="../assets/image-9.png" alt="" />-->
-<!--              </div>-->
-<!--              <figcaption class="article__figure-caption">-->
-<!--                Подпись к фотографии. Здесь будет реальное фото.-->
-<!--              </figcaption>-->
-<!--            </figure>-->
+            <figure class="article__figure">
+              <div class="article__figure-img">
+                <img src="../assets/image-9.png" alt="" />
+              </div>
+              <figcaption class="article__figure-caption">
+                Подпись к фотографии.
+              </figcaption>
+            </figure>
 
             <p class="article__question">
               <strong>— А вообще, обсуждаются ли выборы президента России в Казахстане и Узбекистане?</strong>
@@ -139,14 +151,14 @@
             </p>
             <section class="article__related">
               <h2 class="article__related-title">
-                Сюжет: Центральная Азия
+                Сюжет: {{ article.themes }}
               </h2>
               <ul class="article__related-list">
                 <li class="article__related-item">
-                  <a href="#" class="article__related-link">Новость по теме 1</a>
+                  <a href="#" class="article__related-link">Новость по теме {{ article.themes }}</a>
                 </li>
                 <li class="article__related-item">
-                  <a href="#" class="article__related-link">Аналитика по теме 2</a>
+                  <a href="#" class="article__related-link">Аналитика по теме {{ article.countries }}</a>
                 </li>
                 <li class="article__related-item">
                   <a href="#" class="article__related-link">Интервью по теме 3</a>
@@ -183,13 +195,23 @@ const TAG_ROUTE_BY_VALUE: Record<string, string> = {
   'аналитика': 'analitika',
   'интервью': 'intervyu',
   'мнения': 'mneniya',
-  'обзоры': 'obzory'
+  'обзоры': 'obzory',
 }
 
 const articleTagRouteName = computed(() => {
   const tag = article.value?.tag?.toLowerCase?.()
   return tag ? TAG_ROUTE_BY_VALUE[tag] : undefined
 })
+//
+// const articleCountryRouteName = computed(() => {
+//   const tag = article.value?.country?.toLowerCase?.()
+//   return tag ? TAG_ROUTE_BY_VALUE[tag] : undefined
+// })
+//
+// const articleThemeRouteName = computed(() => {
+//   const tag = article.value?.tag?.toLowerCase?.()
+//   return tag ? TAG_ROUTE_BY_VALUE[tag] : undefined
+// })
 
 const articleMetaDate = '31 июля 2025 г., 14:52'
 </script>
@@ -219,7 +241,8 @@ p {
   width: 100%;
   max-height: 420px;
   object-fit: cover;
-  border-radius: var(--radius-md);
+  //border-radius: var(--radius-md);
+  padding-top: 16px;
 }
 
 .article__cover-caption {
@@ -300,7 +323,6 @@ p {
 
 .article__figure-img {
   width: 100%;
-  height: 260px;
   border-radius: var(--radius-md);
 }
 

@@ -23,6 +23,7 @@ const slides = articles.filter(a => a.favourite)
       class="banner-carousel"
   >
     <SwiperSlide v-for="article in slides" :key="article.id" class="banner-carousel__slide">
+      <RouterLink :to="{ name: 'statiya', params: { id: article.id } }">
       <img :src="article.img" alt="" class="banner-carousel__img" />
       <div class="banner-carousel__overlay"></div>
       <div class="banner-carousel__content">
@@ -30,6 +31,7 @@ const slides = articles.filter(a => a.favourite)
         <h2 class="banner-carousel__title">{{ article.title }}</h2>
         <p class="banner-carousel__subtitle">{{ article.subtitle }}</p>
       </div>
+      </RouterLink>
     </SwiperSlide>
   </Swiper>
 </template>
@@ -122,5 +124,18 @@ const slides = articles.filter(a => a.favourite)
     border-radius: 6px;
     opacity: 1;
   }
+}
+
+.banner-carousel a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.banner-carousel a:hover,
+.banner-carousel a:focus,
+.banner-carousel a:visited,
+.banner-carousel a:active {
+  color: inherit;
+  text-decoration: none;
 }
 </style>

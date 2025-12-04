@@ -6,15 +6,15 @@ const countries = [
   "Белоруссия",
   "Казахстан",
   "Киргизия",
+  "Узбекистан",
   "Таджикистан",
   "Туркмения",
-  "Узбекистан",
-  "Китай",
+  "БРИКС",
   "Африка",
   "Евросоюз",
 ];
 
-const topics = ["Дипломатия", "Угрозы", "Энергетика", "История", "Вечное"];
+const topics = ["Дипломатия", "Угрозы", "Энергетика", "История", "Культура", "6я тема"];
 
 type Expert = {
   id: number;
@@ -26,6 +26,7 @@ type Expert = {
 const experts: Expert[] = [
   { id: 1, name: "Имя Фамилия", role: "Должность", avatar: dummyimg },
   { id: 2, name: "Имя Фамилия", role: "Должность", avatar: dummyimg },
+  { id: 3, name: "Имя Фамилия", role: "Должность", avatar: dummyimg },
 ];
 
 const mainQuote = {
@@ -108,6 +109,7 @@ const mainQuote = {
 
     <!-- Цитаты -->
     <section class="sidebar-block sidebar-block--quotes">
+      <h3 class="sidebar-block__title">Цитаты</h3>
       <div class="sidebar-quote">
         <img
           :src="dummyimg"
@@ -162,7 +164,7 @@ const mainQuote = {
 
 .sidebar-block__title {
   margin: 0 0 var(--paddingM);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--color-text);
 }
@@ -324,7 +326,6 @@ const mainQuote = {
   display: flex;
   flex-direction: column;
   gap: var(--paddingM);
-  cursor: pointer;
   transition:
     box-shadow 0.2s ease,
     transform 0.15s ease;

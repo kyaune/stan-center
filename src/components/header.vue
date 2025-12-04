@@ -195,8 +195,8 @@ a {
 }
 
 .link__image {
-  height: 36px;
-  width: 36px;
+  height: 24px;
+  width: 24px;
   display: block;
 }
 

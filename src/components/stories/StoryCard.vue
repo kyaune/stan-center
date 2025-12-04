@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   id: number
-  title: string
+  story: string
   img: string
 }>()
 </script>
@@ -9,17 +9,17 @@ defineProps<{
 <template>
   <RouterLink
       class="story-card"
-      :to="{ name: 'statiya', params: { id } }"
+      :to="{ name: 'tag', params: { slug: story } }"
   >
   <article class="story-card">
     <div class="story-card__image-wrapper">
-      <img :src="img" :alt="title" class="story-card__image" />
+      <img :src="img" :alt="story" class="story-card__image" />
 
       <div class="story-card__gradient" />
 
       <div class="story-card__content">
         <h3 class="story-card__title">
-          {{ title }}
+          {{ story }}
         </h3>
       </div>
     </div>
@@ -75,14 +75,14 @@ defineProps<{
   position: absolute;
   left: var(--paddingM);
   right: var(--paddingM);
-  bottom: var(--paddingM);
+  bottom: var(--paddingXL);
 }
 
 .story-card__title {
   margin: 0;
   font-family: var(--font-main);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1.75rem;
   line-height: 1.3;
   color: var(--font-color-main);
 }

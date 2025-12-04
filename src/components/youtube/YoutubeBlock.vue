@@ -8,20 +8,7 @@ const youtubeUrl = `https://www.youtube.com/embed/${videoId}`;
   <section class="youtube">
     <div class="youtube__inner">
       <header class="youtube__header">
-        <h2 class="youtube__title">Мы на YouTube</h2>
-        <p class="youtube__subtitle">
-          Подписывайтесь
-          <a
-              href="https://youtube.com/@stan_center"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="about__link"
-          >
-            на наш канал
-          </a>
-          и смотрите аналитические видео и интервью.
-        </p>
-
+        <h2 class="youtube__title">Видеотека</h2>
       </header>
 
       <div class="youtube__video-wrapper">
@@ -53,7 +40,7 @@ const youtubeUrl = `https://www.youtube.com/embed/${videoId}`;
 
 .youtube__title {
   margin: 0 0 4px;
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
   color: var(--color-text);
 }

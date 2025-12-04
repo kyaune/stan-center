@@ -2,7 +2,7 @@
   <main class="about">
     <section class="about__inner">
       <h1 class="about__title">О нас</h1>
-
+      <img src="../assets/tilsit.jpg" class="about__img" alt="">
       <p class="about__paragraph">
         Центр по развитию прикладных геополитических исследований
         на евразийском пространстве «Стан» (сокращённо «Стан-Центр»)
@@ -24,53 +24,58 @@
 
         <ul class="about__links">
           <li>
+            Мы в
             <a
                 href="https://t.me/stan_center"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="about__link"
             >
-              Мы в «Телеграме»: t.me/stan_center
+              «Телеграме»
             </a>
           </li>
           <li>
+            Мы в
             <a
                 href="https://ok.ru/stan.center"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="about__link"
             >
-              Мы в «Одноклассниках»: ok.ru/stan.center
+              «Одноклассниках»
             </a>
           </li>
           <li>
+            Мы в
             <a
                 href="https://vk.com/stan_center"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="about__link"
             >
-              Мы во «Вконтакте»: vk.com/stan_center
+              «Вконтакте»
             </a>
           </li>
           <li>
+            Мы в
             <a
                 href="https://youtube.com/@stan_center"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="about__link"
             >
-              Мы в «Ютубе»: youtube.com/@stan_center
+              «Ютубе»
             </a>
           </li>
           <li>
+            Мы в
             <a
                 href="https://www.tiktok.com/@stan_center"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="about__link"
             >
-              Мы в «Тиктоке»: tiktok.com/@stan_center
+              «Тиктоке»
             </a>
           </li>
         </ul>
@@ -88,6 +93,10 @@
   padding-block: var(--paddingXL);
   font-family: var(--font-main);
 }
+
+.about__img {
+  max-width: 800px;
+ }
 
 .about__inner {
   @include container;

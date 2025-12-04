@@ -24,7 +24,7 @@ const props = defineProps<{
       />
     </div>
     <div class="favourite-article__content">
-      <span class="favourite-article__quote">«</span>
+      <span class="favourite-article__quote">"</span>
       <h3 class="favourite-article__title">{{ article.title }}</h3>
     </div>
   </article>

@@ -15,8 +15,8 @@
 
       <p class="contacts__paragraph">
         Телефон:
-        <a class="contacts__link" href="tel:+79114752102">
-          +7&nbsp;911&nbsp;475-21-02
+        <a class="contacts__link" href="tel:+79125777577">
+          +7&nbsp;912&nbsp;577-75-77
         </a>
       </p>
 
