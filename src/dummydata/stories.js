@@ -42,11 +42,6 @@ const stories = [
         img: tilsit,
     },
     {
-        id: 9,
-        story: '«Не гоните дезу!»',
-        img: tilsit,
-    },
-    {
         id: 10,
         story: 'Жизнь «Стан-Центра»',
         img: tilsit,

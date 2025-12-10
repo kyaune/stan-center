@@ -61,6 +61,10 @@ const props = defineProps<{
   font-size: 2rem;
   line-height: 1.2;
   color: var(--color-text);
+  text-wrap: balance;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 /* сетка карточек */

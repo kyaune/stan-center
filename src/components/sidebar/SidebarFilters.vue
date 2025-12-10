@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import dummyimg from '@/assets/dummyimg.jpg';
 import { RouterLink } from 'vue-router';
+import { computed } from 'vue';
 const countries = [
   "Россия",
   "Белоруссия",
@@ -14,7 +15,9 @@ const countries = [
   "Евросоюз",
 ];
 
-const topics = ["Дипломатия", "Угрозы", "Энергетика", "История", "Культура", "6я тема"];
+const countriesRows = computed(() => Math.ceil(countries.length / 2));
+
+const topics = ["Дипломатия", "Угрозы", "Энергетика", "История", "Культура", "Деньги"];
 
 type Expert = {
   id: number;
@@ -40,7 +43,7 @@ const mainQuote = {
     <!-- Страны -->
     <section class="sidebar-block sidebar-block--countries">
       <h3 class="sidebar-block__title">Страны</h3>
-      <ul class="sidebar-countries">
+      <ul class="sidebar-countries" :style="{ '--countries-rows': countriesRows }">
         <li
           v-for="country in countries"
           :key="country"
@@ -177,6 +180,8 @@ const mainQuote = {
   padding: 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(var(--countries-rows), auto);
+  grid-auto-flow: column;
   row-gap: 8px;
   column-gap: 32px;
 }
