@@ -6,9 +6,24 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 import articles from '@/dummydata/articles'
+import {computed} from "vue";
+import {RouterLink} from "vue-router";
 
 const modules = [ Autoplay, Navigation, Pagination];
 const slides = articles.filter(a => a.favourite)
+
+const TAG_ROUTE_BY_VALUE =  {
+  'аналитика': 'analitika',
+  'интервью': 'intervyu',
+  'мнения': 'mneniya',
+  'обзоры': 'obzory',
+}
+
+const articleTagRouteName = computed(() => {
+  const tag = slides.tag?.toLowerCase?.()
+  console.log({slides})
+  return tag ? TAG_ROUTE_BY_VALUE[tag] : undefined
+})
 </script>
 
 <template>
@@ -27,7 +42,11 @@ const slides = articles.filter(a => a.favourite)
       <img :src="article.img" alt="" class="banner-carousel__img" />
       <div class="banner-carousel__overlay"></div>
       <div class="banner-carousel__content">
-        <span class="banner-carousel__tag">{{ article.tag.toUpperCase() }}</span>
+        <RouterLink
+                    :to="{ name: TAG_ROUTE_BY_VALUE[article.tag.toLowerCase()] }"
+                    class="banner-carousel__tag">
+        {{ article.tag.toUpperCase() }}
+        </RouterLink>
         <h2 class="banner-carousel__title">{{ article.title }}</h2>
         <p class="banner-carousel__subtitle">{{ article.subtitle }}</p>
       </div>

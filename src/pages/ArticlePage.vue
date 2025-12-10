@@ -150,18 +150,23 @@
               **Физическое лицо, внесённое в список террористов и экстремистов Росфинмониторинга.
             </p>
             <section class="article__related">
+
               <h2 class="article__related-title">
-                Сюжет: {{ article.themes }}
+                Сюжет: <RouterLink class="article__related-title-link" :to="{ name: 'tag', params: { slug: article.story } }">{{ article.story }}</RouterLink>
               </h2>
+              <h2 class="article__related-title">
+                Также по теме:
+              </h2>
+
               <ul class="article__related-list">
                 <li class="article__related-item">
-                  <a href="#" class="article__related-link">Новость по теме {{ article.themes }}</a>
+                  <a href="#" class="article__related-link">Заголовок связанной новости 1</a>
                 </li>
                 <li class="article__related-item">
-                  <a href="#" class="article__related-link">Аналитика по теме {{ article.countries }}</a>
+                  <a href="#" class="article__related-link">Заголовок связанной новости 2</a>
                 </li>
                 <li class="article__related-item">
-                  <a href="#" class="article__related-link">Интервью по теме 3</a>
+                  <a href="#" class="article__related-link">Заголовок связанной новости 3</a>
                 </li>
               </ul>
             </section>
@@ -293,7 +298,8 @@ p {
 
 .article__subtitle {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1.25rem;
+  font-style: italic;
   color: var(--color-text-muted);
   line-height: 1.4;
 }
@@ -393,6 +399,16 @@ p {
   font-size: 1rem;
   font-weight: 700;
   color: var(--color-text);
+}
+
+.article__related-title-link {
+  color: var(--color-primary);;
+  text-decoration: none;
+}
+
+.article__related-title-link:hover,
+.article__related-title-link:focus-visible {
+  text-decoration: none;
 }
 
 .article__related-list {

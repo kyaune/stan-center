@@ -24,7 +24,7 @@ const props = defineProps<{
       />
     </div>
     <div class="favourite-article__content">
-      <span class="favourite-article__quote">"</span>
+      <span class="favourite-article__quote" aria-hidden="true">“</span>
       <h3 class="favourite-article__title">{{ article.title }}</h3>
     </div>
   </article>
@@ -78,11 +78,13 @@ const props = defineProps<{
   }
 
   &__quote {
-    font-size: 22px;
-    font-weight: bold;
+    font-size: 48px;
+    font-weight: 800;
     color: #00793d;
-    margin-right: 0.5rem;
-    line-height: 1;
+    margin-right: 0.6rem;
+    line-height: 0.85;
+    transform: translateY(-2px);
+    font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
   }
 
   &__title {
