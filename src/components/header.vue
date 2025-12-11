@@ -42,9 +42,10 @@
     </div>
     <div class="header__actions" aria-label="Соцсети">
       <a
-          v-for="({ label, src, alt, href }, index) in socialLinks"
+          v-for="({ label, src, alt, href, name }, index) in socialLinks"
           :key="index"
           class="header__social-link"
+          :class="`header__social-link--${name}`"
           :href="href"
           :aria-label="label"
           rel="nofollow noopener"
@@ -59,11 +60,11 @@
 <script setup lang="ts">
 import { RouterLink, useRoute } from 'vue-router'
 
-import logoTg from '@/assets/logos/logo_tg_1.png'
-import logoTt from '@/assets/logos/logo_tt_1.png'
-import logoYt from '@/assets/logos/logo_yt_1.png'
-import logoVk from '@/assets/logos/logo_vk_1.png'
-import logoOk from '@/assets/logos/logo_ok_1.png'
+import logoTg from '@/assets/logos/telegram.svg'
+import logoTt from '@/assets/logos/tiktok.svg'
+import logoYt from '@/assets/logos/youtube.svg'
+import logoVk from '@/assets/logos/vk.svg'
+import logoOk from '@/assets/logos/odnoklassniki.svg'
 
 const route = useRoute()
 
@@ -77,11 +78,11 @@ const navLinks = [
 ]
 
 const socialLinks = [
-  { label: 'Телеграм', src: logoTg, alt: 'logo tg', href: 'https://t.me/stan_center' },
-  { label: 'Тикток', src: logoTt, alt: 'logo tt', href: 'https://www.tiktok.com/@stan_center' },
-  { label: 'Ютуб', src: logoYt, alt: 'logo yt', href: 'https://youtube.com/@stan_center' },
-  { label: 'Вконтакте', src: logoVk, alt: 'logo vk', href: 'https://vk.com/stan_center' },
-  { label: 'Одноклассники', src: logoOk, alt: 'logo ok', href: 'https://ok.ru/stan.center' }
+  { label: 'Телеграм', src: logoTg, alt: 'logo tg', href: 'https://t.me/stan_center', name: 'telegram' },
+  { label: 'Тикток', src: logoTt, alt: 'logo tt', href: 'https://www.tiktok.com/@stan_center', name: 'tiktok' },
+  { label: 'Ютуб', src: logoYt, alt: 'logo yt', href: 'https://youtube.com/@stan_center', name: 'youtube' },
+  { label: 'Вконтакте', src: logoVk, alt: 'logo vk', href: 'https://vk.com/stan_center', name: 'vkontakte' },
+  { label: 'Одноклассники', src: logoOk, alt: 'logo ok', href: 'https://ok.ru/stan.center', name: 'odnoklassniki' },
 ]
 </script>
 
@@ -188,16 +189,62 @@ a {
 
 .header__social-link {
   color: var(--color-text);
+  cursor: pointer;
 
   &:hover {
-    color: var(--color-primary); // 👈 станет фирменно зелёной
+    color: var(--color-primary);
+  }
+
+  &:hover .link__image,
+  &:focus-visible .link__image {
+    /* возвращаем оригинальные цвета SVG */
+    filter: none;
+    opacity: 1;
+    transform: translateY(-1px);
   }
 }
 
 .link__image {
-  height: 24px;
-  width: 24px;
+  height: 30px;
+  width: 30px;
   display: block;
+  /* делаем иконку практически чёрной по умолчанию */
+  filter: grayscale(1) brightness(0.25);
+  opacity: 0.9;
+  transition:
+    filter 0.25s ease,
+    opacity 0.25s ease,
+    transform 0.15s ease;
 }
 
+.header__social-link--telegram .link__image {
+  /* примеры — можешь настроить под нужды */
+  /* filter: grayscale(1) brightness(0.3); */
+}
+
+.header__social-link--tiktok .link__image {
+  /* свои стили для тиктока */
+  height: 24px;
+  width: 24px;
+  padding-top: 2px;
+}
+
+.header__social-link--youtube .link__image {
+  /* стили для ютуба */
+  height: 34px;
+  width: 34px;
+}
+
+.header__social-link--vkontakte .link__image {
+  /* стили для вк */
+  padding-top: 2px;
+}
+
+.header__social-link--odnoklassniki .link__image {
+  /* стили для одноклассников */
+  height: 28px;
+  width: 28px;
+  margin-left: -8px;
+  padding-top: 2px;
+}
 </style>
