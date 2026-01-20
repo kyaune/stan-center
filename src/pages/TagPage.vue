@@ -13,7 +13,7 @@
                 v-for="article in previewArticles"
                 :key="article.id"
                 :id="article.id"
-                :title="article.title"
+                :story="article.title"
                 :img="article.img"
             />
           </div>
