@@ -38,12 +38,12 @@ const articleTagRouteName = computed(() => {
       class="banner-carousel"
   >
     <SwiperSlide v-for="article in slides" :key="article.id" class="banner-carousel__slide">
-      <RouterLink :to="{ name: 'statiya', params: { id: article.id } }">
+      <RouterLink :to="{ name: 'article-by-tag', params: { tagSlug: TAG_ROUTE_BY_VALUE[article.tag.toLowerCase()], id: article.id } }">
       <img :src="article.img" alt="" class="banner-carousel__img" />
       <div class="banner-carousel__overlay"></div>
       <div class="banner-carousel__content">
         <RouterLink
-                    :to="{ name: TAG_ROUTE_BY_VALUE[article.tag.toLowerCase()] }"
+                    :to="{ name: 'tag', params: { slug: TAG_ROUTE_BY_VALUE[article.tag.toLowerCase()] } }"
                     class="banner-carousel__tag">
         {{ article.tag.toUpperCase() }}
         </RouterLink>

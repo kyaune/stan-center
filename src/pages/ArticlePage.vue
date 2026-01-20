@@ -15,14 +15,14 @@
               </RouterLink>
               <span class="article__meta-dot">·</span>
               <RouterLink
-                  :to="{ name: 'tag', params: { slug: article.countries } }"
+                  :to="{ name: 'tag', params: { slug: slugMap[article.countries] } }"
                   class="article__tag-link"
               >
                 {{ article.countries }}
               </RouterLink>
               <span class="article__meta-dot">·</span>
               <RouterLink
-                  :to="{ name: 'tag', params: { slug: article.themes } }"
+                  :to="{ name: 'tag', params: { slug: slugMap[article.themes] } }"
                   class="article__tag-link"
               >
                 {{ article.themes }}
@@ -188,6 +188,25 @@ import ContentWithSidebar from '@/components/layout/ContentWithSidebar.vue'
 import SidebarFilters from '@/components/sidebar/SidebarFilters.vue'
 import articles from '@/dummydata/articles'
 
+const slugMap: Record<string, string> = {
+  "Дипломатия": "diplomatiya",
+  "Угрозы": "ugrozy",
+  "Энергетика": "energetika",
+  "История": "istoriya",
+  "Культура": "kultura",
+  "Деньги": "dengi",
+  "Россия": "rossiya",
+  "Белоруссия": "belorussiya",
+  "Казахстан": "kazakhstan",
+  "Киргизия": "kyrgyziya",
+  "Узбекистан": "uzbekistan",
+  "Таджикистан": "tadjikistan",
+  "Туркмения": "turkmeniya",
+  "БРИКС": "briks",
+  "Африка": "afrika",
+  "Евросоюз": "evrosoyuz"
+};
+
 const route = useRoute()
 
 const article = computed(() => {
@@ -207,16 +226,10 @@ const articleTagRouteName = computed(() => {
   const tag = article.value?.tag?.toLowerCase?.()
   return tag ? TAG_ROUTE_BY_VALUE[tag] : undefined
 })
-//
-// const articleCountryRouteName = computed(() => {
-//   const tag = article.value?.country?.toLowerCase?.()
-//   return tag ? TAG_ROUTE_BY_VALUE[tag] : undefined
-// })
-//
-// const articleThemeRouteName = computed(() => {
-//   const tag = article.value?.tag?.toLowerCase?.()
-//   return tag ? TAG_ROUTE_BY_VALUE[tag] : undefined
-// })
+
+const articleMetaDate = computed(() => {
+  return article.value?.date || '31 июля 2025 г., 14:52'
+})
 
 const articleMetaDate = '31 июля 2025 г., 14:52'
 </script>

@@ -26,7 +26,7 @@
   </main>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import BannerCarousel from "@/components/bannerCarousel.vue";
 import FavouriteArticlesList from "@/components/articles/FavouriteArticlesList.vue";
 import ContentWithSidebar from "@/components/layout/ContentWithSidebar.vue";

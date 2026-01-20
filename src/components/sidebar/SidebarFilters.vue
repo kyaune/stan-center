@@ -19,6 +19,27 @@ const countriesRows = computed(() => Math.ceil(countries.length / 2));
 
 const topics = ["Дипломатия", "Угрозы", "Энергетика", "История", "Культура", "Деньги"];
 
+const slugMap: Record<string, string> = {
+  "Дипломатия": "diplomatiya",
+  "Угрозы": "ugrozy",
+  "Энергетика": "energetika",
+  "История": "istoriya",
+  "Культура": "kultura",
+  "Деньги": "dengi",
+
+  // страны
+  "Россия": "rossiya",
+  "Белоруссия": "belorussiya",
+  "Казахстан": "kazakhstan",
+  "Киргизия": "kyrgyziya",
+  "Узбекистан": "uzbekistan",
+  "Таджикистан": "tadjikistan",
+  "Туркмения": "turkmeniya",
+  "БРИКС": "briks",
+  "Африка": "afrika",
+  "Евросоюз": "evrosoyuz",
+};
+
 type Expert = {
   id: number;
   name: string;
@@ -50,7 +71,7 @@ const mainQuote = {
           class="sidebar-countries__item"
         >
           <RouterLink
-            :to="{ name: 'tag', params: { slug: country } }"
+            :to="{ name: 'tag', params: { slug: slugMap[country] } }"
             class="sidebar-link"
           >
             {{ country }}
@@ -69,7 +90,7 @@ const mainQuote = {
           class="sidebar-topics__item"
         >
           <RouterLink
-            :to="{ name: 'tag', params: { slug: topic } }"
+            :to="{ name: 'tag', params: { slug: slugMap[topic] } }"
             class="sidebar-chip"
           >
             {{ topic }}

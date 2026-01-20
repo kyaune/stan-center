@@ -8,12 +8,19 @@ const props = defineProps<{
     img: string
   }
 }>()
+
+const TAG_ROUTE_BY_VALUE =  {
+  'аналитика': 'analitika',
+  'интервью': 'intervyu',
+  'мнения': 'mneniya',
+  'обзоры': 'obzory',
+}
 </script>
 
 <template>
   <RouterLink
       class="favourite-article"
-      :to="{ name: 'statiya', params: { id: props.article.id } }"
+      :to="{ name: 'article-by-tag', params: { tagSlug: TAG_ROUTE_BY_VALUE[props.article.tag.toLowerCase()], id: props.article.id } }"
   >
   <article class="favourite-article">
     <div class="favourite-article__image-wrapper">

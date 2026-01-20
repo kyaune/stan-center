@@ -38,10 +38,31 @@ import articles from '@/dummydata/articles'
 
 // карта: slug → заголовок на русском
 const TAG_TITLES: Record<string, string> = {
-  analitika: 'Аналитика',
-  intervyu: 'Интервью',
-  mneniya: 'Мнения',
-  obzory: 'Обзоры'
+  // тематики
+  diplomatiya: "Дипломатия",
+  ugrozy: "Угрозы",
+  energetika: "Энергетика",
+  istoriya: "История",
+  kultura: "Культура",
+  dengi: "Деньги",
+
+  // страны
+  rossiya: "Россия",
+  belorussiya: "Белоруссия",
+  kazakhstan: "Казахстан",
+  kyrgyziya: "Киргизия",
+  uzbekistan: "Узбекистан",
+  tadjikistan: "Таджикистан",
+  turkmeniya: "Туркмения",
+  briks: "БРИКС",
+  afrika: "Африка",
+  evrosoyuz: "Евросоюз",
+
+  // существующие типы
+  analitika: "Аналитика",
+  intervyu: "Интервью",
+  mneniya: "Мнения",
+  obzory: "Обзоры"
 }
 
 // карта: slug → значение тега в данных
