@@ -1,6 +1,7 @@
 <template>
   <main class="contacts">
     <section class="contacts__inner">
+      <img src="../assets/tilsit.jpg" class="about__img" alt="">
       <h1 class="contacts__title">Контакты</h1>
 
       <p class="contacts__paragraph">
@@ -26,12 +27,14 @@
           vypolzov@mail.ru
         </a>
       </p>
+      <div class="contacts__map">
+        <YandexMap />
+      </div>
     </section>
   </main>
 </template>
-
-<script setup lang="ts">
-/* логика пока не нужна */
+<script setup>
+import YandexMap from "@/components/YandexMap.vue"
 </script>
 
 <style scoped lang="scss">
@@ -43,6 +46,22 @@
 .contacts__inner {
   @include container;
   max-width: 800px;
+}
+
+.about__img {
+  max-width: 800px;
+}
+
+.contacts__map {
+  margin-top: var(--paddingXL);
+  width: 100%;
+
+  iframe {
+    border: none;
+    width: 100%;
+    height: 400px;
+    border-radius: var(--radiusM);
+  }
 }
 
 .contacts__title {
