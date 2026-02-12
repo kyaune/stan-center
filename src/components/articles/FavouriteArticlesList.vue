@@ -10,9 +10,15 @@
 
 <script setup>
 import FavouriteArticleCard from '@/components/articles/FavouriteArticleCard.vue'
-import articles from '@/dummydata/articles'
+import { useWordPressArticles } from '@/composables/useWordPressArticles.js'
+import {computed} from "vue";
 
-const favouriteArticles = articles.filter(a => a.favourite).slice(0, 4)
+const {articles}  =  useWordPressArticles()
+const favouriteArticles = computed(() => {
+  return articles.value.filter(a => a.favourite).slice(0, 4)
+})
+
+// const favouriteArticles = articles.filter(a => a.favourite).slice(0, 4)
 </script>
 
 <style scoped lang="scss">
@@ -23,15 +29,20 @@ const favouriteArticles = articles.filter(a => a.favourite).slice(0, 4)
   padding-block: 2rem;
 }
 
-/* по умолчанию 4-ю карточку скрываем — останется максимум 3 */
+/* по умолчанию 4-ю карточку схлопываем — останется максимум 3 */
 .favourite-list > :nth-child(4) {
-  display: none;
+  max-width: 0;
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 1;
 }
 
-/* на широких экранах включаем 4-ю карточку */
+/* на широких экранах разворачиваем 4-ю карточку */
 @include respond(1200px) {
   .favourite-list > :nth-child(4) {
-    display: block;
+    max-width: none;
+    margin: inherit;
   }
 }
 </style>

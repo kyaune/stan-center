@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import dummyimg from '@/assets/dummyimg.jpg';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRoute } from 'vue-router';
 import { computed } from 'vue';
+
+const route = useRoute()
+
+// Текущий активный slug из роута
+const activeSlug = computed(() => {
+  return (route.meta.tagSlug as string) || (route.params.slug as string) || ''
+})
+
 const countries = [
   "Россия",
   "Белоруссия",
@@ -47,16 +54,20 @@ type Expert = {
   avatar: string;
 };
 
-const experts: Expert[] = [
-  { id: 1, name: "Имя Фамилия", role: "Должность", avatar: dummyimg },
-  { id: 2, name: "Имя Фамилия", role: "Должность", avatar: dummyimg },
-  { id: 3, name: "Имя Фамилия", role: "Должность", avatar: dummyimg },
-];
+import { useWordPressExperts } from "@/composables/useWordPressExperts"
+const { experts, loading } = useWordPressExperts()
 
-const mainQuote = {
-  text: "«Центральной Азии важна последовательная и предсказуемая Россия»",
-  author: "Имя Фамилия, должность / источник",
-};
+import { useWordPressQuotes } from "@/composables/useWordPressQuotes"
+const { quotes, loading: quotesLoading } = useWordPressQuotes()
+
+// Случайная цитата для отображения в сайдбаре
+const randomIndex = Math.floor(Math.random() * 1000)
+const sidebarQuote = computed(() => {
+  if (!quotes.value.length) return null
+  console.log({quotes})
+  console.log(quotes.value[randomIndex % quotes.value.length])
+  return quotes.value[randomIndex % quotes.value.length]
+})
 </script>
 
 <template>
@@ -72,7 +83,7 @@ const mainQuote = {
         >
           <RouterLink
             :to="{ name: 'tag', params: { slug: slugMap[country] } }"
-            class="sidebar-link"
+            :class="['sidebar-link', { 'sidebar-link--active': activeSlug === slugMap[country] }]"
           >
             {{ country }}
           </RouterLink>
@@ -91,7 +102,7 @@ const mainQuote = {
         >
           <RouterLink
             :to="{ name: 'tag', params: { slug: slugMap[topic] } }"
-            class="sidebar-chip"
+            :class="['sidebar-chip', { 'sidebar-chip--active': activeSlug === slugMap[topic] }]"
           >
             {{ topic }}
           </RouterLink>
@@ -104,17 +115,21 @@ const mainQuote = {
       <h3 class="sidebar-block__title">Эксперты</h3>
 
       <div class="sidebar-experts">
-        <article
+        <RouterLink
           v-for="expert in experts"
           :key="expert.id"
+          :to="{ name: 'expert', params: { slug: expert.slug } }"
           class="sidebar-expert"
         >
           <img
+            v-if="expert.avatar"
             :src="expert.avatar"
-            :alt="`Фото эксперта ${expert.name}`"
+            :alt="`Фото ${expert.name}`"
             class="sidebar-expert__avatar"
           />
-
+          <div v-else class="sidebar-expert__avatar sidebar-expert__avatar--placeholder">
+            {{ expert.name?.charAt(0) || '?' }}
+          </div>
           <div class="sidebar-expert__body">
             <h4 class="sidebar-expert__name">
               {{ expert.name }}
@@ -123,7 +138,7 @@ const mainQuote = {
               {{ expert.role }}
             </p>
           </div>
-        </article>
+        </RouterLink>
       </div>
 
       <RouterLink :to="{ name: 'experti' }" class="sidebar-button">
@@ -134,21 +149,27 @@ const mainQuote = {
     <!-- Цитаты -->
     <section class="sidebar-block sidebar-block--quotes">
       <h3 class="sidebar-block__title">Цитаты</h3>
-      <div class="sidebar-quote">
+
+      <div v-if="sidebarQuote" class="sidebar-quote">
         <img
-          :src="dummyimg"
-          alt="Фото к цитате"
+          v-if="sidebarQuote.expertImage"
+          :src="sidebarQuote.expertImage"
+          :alt="`Фото ${sidebarQuote.expertName}`"
           class="sidebar-quote__image"
         />
         <div class="sidebar-quote__text-block">
           <p class="sidebar-quote__text">
-            {{ mainQuote.text }}
+            «{{ sidebarQuote.text }}»
           </p>
         </div>
         <p class="sidebar-quote__meta">
-          {{ mainQuote.author }}
+          {{ sidebarQuote.expertName }}<template v-if="sidebarQuote.expertPosition">, {{ sidebarQuote.expertPosition }}</template>
         </p>
       </div>
+
+      <p v-else-if="quotesLoading" class="sidebar-quote__loading">
+        Загрузка цитат...
+      </p>
 
       <RouterLink :to="{ name: 'citati' }" class="sidebar-button">
         Все цитаты
@@ -231,6 +252,11 @@ const mainQuote = {
   transform: translateY(-1px);
 }
 
+.sidebar-link--active {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
 /* ======================== Темы ======================== */
 
 .sidebar-topics {
@@ -270,6 +296,12 @@ const mainQuote = {
   transform: translateY(-1px);
 }
 
+.sidebar-chip--active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #ffffff;
+}
+
 /* ======================== Эксперты ======================== */
 
 .sidebar-experts {
@@ -283,29 +315,41 @@ const mainQuote = {
   align-items: flex-start;
   gap: var(--paddingM);
   cursor: pointer;
+  text-decoration: none;
+  padding: var(--paddingS);
+  margin: calc(-1 * var(--paddingS));
+  border-radius: var(--radius-md);
   transition:
     background-color 0.2s ease,
     box-shadow 0.2s ease,
     transform 0.15s ease;
 }
 
-//.sidebar-expert:hover {
-//  background-color: #f6f7f8;
-//  border-radius: var(--radius-md);
-//  box-shadow: var(--shadow-soft);
-//  transform: translateY(-1px);
-//}
+.sidebar-expert:hover {
+  background-color: #f6f7f8;
+  transform: translateY(-1px);
+}
 
 .sidebar-expert__avatar {
   flex-shrink: 0;
-  width: 68px;
-  height: 68px;
+  width: 48px;
+  height: 48px;
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
   object-fit: cover;
   object-position: center;
   display: block;
   background-color: #eef2f6;
+}
+
+.sidebar-expert__avatar--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 700;
 }
 
 .sidebar-expert__name {
@@ -367,7 +411,7 @@ const mainQuote = {
   height: 180px;
   border-radius: var(--radius-md);
   display: block;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
   background-color: #dde5ef;
 }
@@ -406,5 +450,13 @@ const mainQuote = {
   margin: 0;
   font-size: 0.85rem;
   color: var(--color-text-muted);
+}
+
+.sidebar-quote__loading {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: var(--paddingM);
 }
 </style>

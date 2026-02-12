@@ -2,9 +2,10 @@
 const props = defineProps<{
   article: {
     id: number
+    acfId: number
     title: string
     subtitle?: string
-    tag?: string
+    type?: string
     img: string
   }
 }>()
@@ -20,7 +21,7 @@ const TAG_ROUTE_BY_VALUE =  {
 <template>
   <RouterLink
       class="favourite-article"
-      :to="{ name: 'article-by-tag', params: { tagSlug: TAG_ROUTE_BY_VALUE[props.article.tag.toLowerCase()], id: props.article.id } }"
+      :to="{ name: `article-${TAG_ROUTE_BY_VALUE[props.article.type.toLowerCase()]}`, params: { id: props.article.acfId } }"
   >
   <article class="favourite-article">
     <div class="favourite-article__image-wrapper">
@@ -48,6 +49,7 @@ const TAG_ROUTE_BY_VALUE =  {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   cursor: pointer;
+  flex: 1;
 
   &:hover {
     transform: translateY(-3px);
@@ -71,6 +73,7 @@ const TAG_ROUTE_BY_VALUE =  {
     align-items: flex-start;
     padding: 1rem 1.25rem 1.5rem 1.25rem;
     position: relative;
+    flex: 1;
 
     &::before {
       content: "";

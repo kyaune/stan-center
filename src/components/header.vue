@@ -2,9 +2,23 @@
   <div class="header__container">
     <div class="header__logo">
       <RouterLink class="header__brand" :to="{name: 'home'}">
-        <img class="header__logo" src="@/assets/stan_logo.png" alt="СТАН.Центр" />
+        <img class="header__logo-img" src="@/assets/stan_logo.png" alt="СТАН.Центр" />
       </RouterLink>
     </div>
+
+    <!-- Бургер-кнопка для мобильных -->
+    <button
+        class="header__burger"
+        :class="{ 'header__burger--open': mobileMenuOpen }"
+        @click="mobileMenuOpen = !mobileMenuOpen"
+        aria-label="Меню"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <!-- Навигация (десктоп) -->
     <div class="header__navs">
       <nav class="header__pages">
         <RouterLink
@@ -40,6 +54,8 @@
         </RouterLink>
       </nav>
     </div>
+
+    <!-- Соцсети (десктоп) -->
     <div class="header__actions" aria-label="Соцсети">
       <a
           v-for="({ label, src, alt, href, name }, index) in socialLinks"
@@ -54,10 +70,64 @@
         <img class="link__image" :src="src" :alt="alt" />
       </a>
     </div>
+
+    <!-- Мобильное меню -->
+    <div class="header__mobile-menu" :class="{ 'header__mobile-menu--open': mobileMenuOpen }">
+      <nav class="header__mobile-nav">
+        <RouterLink
+            :to="{ name: 'analitika' }"
+            class="header__mobile-link"
+            :class="{ 'header__mobile-link--active': isActive('analitika') }"
+            @click="mobileMenuOpen = false"
+        >
+          Аналитика
+        </RouterLink>
+        <RouterLink
+            :to="{ name: 'intervyu' }"
+            class="header__mobile-link"
+            :class="{ 'header__mobile-link--active': isActive('intervyu') }"
+            @click="mobileMenuOpen = false"
+        >
+          Интервью
+        </RouterLink>
+        <RouterLink
+            :to="{ name: 'mneniya' }"
+            class="header__mobile-link"
+            :class="{ 'header__mobile-link--active': isActive('mneniya') }"
+            @click="mobileMenuOpen = false"
+        >
+          Мнения
+        </RouterLink>
+        <RouterLink
+            :to="{ name: 'obzory' }"
+            class="header__mobile-link"
+            :class="{ 'header__mobile-link--active': isActive('obzory') }"
+            @click="mobileMenuOpen = false"
+        >
+          Обзоры
+        </RouterLink>
+      </nav>
+
+      <div class="header__mobile-social">
+        <a
+            v-for="({ label, src, alt, href, name }, index) in socialLinks"
+            :key="index"
+            class="header__social-link"
+            :class="`header__social-link--${name}`"
+            :href="href"
+            :aria-label="label"
+            rel="nofollow noopener"
+            target="_blank"
+        >
+          <img class="link__image" :src="src" :alt="alt" />
+        </a>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
 import logoTg from '@/assets/logos/telegram.svg'
@@ -67,6 +137,7 @@ import logoVk from '@/assets/logos/vk.svg'
 import logoOk from '@/assets/logos/odnoklassniki.svg'
 
 const route = useRoute()
+const mobileMenuOpen = ref(false)
 
 const isActive = (name: string) => route.name === name
 
@@ -246,5 +317,167 @@ a {
   width: 28px;
   margin-left: -8px;
   padding-top: 2px;
+}
+
+/* ==================== Мобильные стили ==================== */
+
+.header__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+  padding: 8px;
+
+  span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: var(--color-text);
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  &--open {
+    span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    span:nth-child(2) {
+      opacity: 0;
+    }
+    span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+  }
+}
+
+.header__mobile-menu {
+  display: none;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffffff;
+  z-index: 1000;
+  flex-direction: column;
+  padding: var(--paddingXL);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+
+  &--open {
+    transform: translateX(0);
+  }
+}
+
+.header__mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--paddingM);
+}
+
+.header__mobile-link {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: none;
+  padding: var(--paddingM) 0;
+  border-bottom: 1px solid var(--color-border);
+  transition: color 0.2s ease;
+
+  &:hover,
+  &--active {
+    color: var(--color-primary);
+  }
+
+  &--active {
+    font-weight: 700;
+  }
+}
+
+.header__mobile-social {
+  display: flex;
+  gap: var(--paddingL);
+  margin-top: auto;
+  padding-top: var(--paddingXL);
+  justify-content: center;
+}
+
+.header__logo-img {
+  width: 100%;
+  height: auto;
+}
+
+/* ==================== Media Queries ==================== */
+
+@media (max-width: 1024px) {
+  .header__navs {
+    padding-left: var(--paddingL);
+  }
+
+  .header__actions {
+    padding-right: var(--paddingL);
+    gap: var(--paddingM);
+  }
+
+  .header__pages {
+    gap: var(--paddingL);
+  }
+
+  .header__nav-link {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header__container {
+    padding: var(--paddingM);
+    max-height: 70px;
+  }
+
+  .header__logo {
+    width: 120px;
+  }
+
+  .header__navs,
+  .header__actions {
+    display: none;
+  }
+
+  .header__burger {
+    display: flex;
+  }
+
+  .header__mobile-menu {
+    display: flex;
+    top: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header__container {
+    padding: var(--paddingS) var(--paddingM);
+    max-height: 60px;
+  }
+
+  .header__logo {
+    width: 100px;
+  }
+
+  .header__mobile-menu {
+    top: 60px;
+    padding: var(--paddingL);
+  }
+
+  .header__mobile-link {
+    font-size: 1.1rem;
+    padding: var(--paddingS) 0;
+  }
 }
 </style>

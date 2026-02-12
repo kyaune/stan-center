@@ -5,18 +5,28 @@
       <template #content>
         <section class="tag-page__content">
           <h1 class="tag-page__title">
-            Все статьи по тегу «{{ title }}»
+            Все статьи по теме «{{ title }}»
           </h1>
 
-          <div class="tag-page__grid">
-            <StoryCard
-                v-for="article in previewArticles"
+          <!-- Лоадер -->
+          <div v-if="loading" class="tag-page__loader">
+            <div class="tag-page__spinner"></div>
+            <p>Загрузка статей...</p>
+          </div>
+
+          <!-- Список статей -->
+          <div v-else-if="filteredArticles.length" class="tag-page__grid">
+            <FavouriteArticleCard
+                v-for="article in filteredArticles"
                 :key="article.id"
-                :id="article.id"
-                :story="article.title"
-                :img="article.img"
+                :article="article"
             />
           </div>
+
+          <!-- Пустое состояние -->
+          <p v-else class="tag-page__empty">
+            Статьи по теме «{{ title }}» пока не найдены.
+          </p>
         </section>
       </template>
 
@@ -33,8 +43,10 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import ContentWithSidebar from '@/components/layout/ContentWithSidebar.vue'
 import SidebarFilters from '@/components/sidebar/SidebarFilters.vue'
-import StoryCard from '@/components/stories/StoryCard.vue'
-import articles from '@/dummydata/articles'
+import FavouriteArticleCard from '@/components/articles/FavouriteArticleCard.vue'
+import { useWordPressArticles } from '@/composables/useWordPressArticles'
+
+const { articles, loading } = useWordPressArticles()
 
 // карта: slug → заголовок на русском
 const TAG_TITLES: Record<string, string> = {
@@ -65,14 +77,39 @@ const TAG_TITLES: Record<string, string> = {
   obzory: "Обзоры"
 }
 
-// карта: slug → значение тега в данных
-// пока у тебя в статьях только "интервью", остальные можно потом добить
-const TAG_DATA_VALUES: Record<string, string> = {
+// карта: slug → русское значение для фильтрации
+const SLUG_TO_VALUE: Record<string, string> = {
+  // типы статей
   analitika: 'аналитика',
   intervyu: 'интервью',
   mneniya: 'мнения',
-  obzory: 'обзоры'
+  obzory: 'обзоры',
+
+  // страны
+  rossiya: 'Россия',
+  belorussiya: 'Белоруссия',
+  kazakhstan: 'Казахстан',
+  kyrgyziya: 'Киргизия',
+  uzbekistan: 'Узбекистан',
+  tadjikistan: 'Таджикистан',
+  turkmeniya: 'Туркмения',
+  briks: 'БРИКС',
+  afrika: 'Африка',
+  evrosoyuz: 'Евросоюз',
+
+  // тематики
+  diplomatiya: 'Дипломатия',
+  ugrozy: 'Угрозы',
+  energetika: 'Энергетика',
+  istoriya: 'История',
+  kultura: 'Культура',
+  dengi: 'Деньги',
 }
+
+// Определяем категорию slug (тип, страна или тема)
+const TYPE_SLUGS = ['analitika', 'intervyu', 'mneniya', 'obzory']
+const COUNTRY_SLUGS = ['rossiya', 'belorussiya', 'kazakhstan', 'kyrgyziya', 'uzbekistan', 'tadjikistan', 'turkmeniya', 'briks', 'afrika', 'evrosoyuz']
+const THEME_SLUGS = ['diplomatiya', 'ugrozy', 'energetika', 'istoriya', 'kultura', 'dengi']
 
 const route = useRoute()
 
@@ -84,22 +121,36 @@ const title = computed(
     () => TAG_TITLES[tagSlug.value] ?? (tagSlug.value || 'Статьи'),
 )
 
-const previewArticles = computed(() => {
-  const tagValue = TAG_DATA_VALUES[tagSlug.value]
-  let list = articles
+const filteredArticles = computed(() => {
+  const slug = tagSlug.value
+  const filterValue = SLUG_TO_VALUE[slug]
 
-  if (tagValue) {
-    list = articles.filter(
-        a => a.tag?.toLowerCase?.() === tagValue.toLowerCase()
+  if (!filterValue || !articles.value.length) {
+    return []
+  }
+
+  // Фильтруем по типу
+  if (TYPE_SLUGS.includes(slug)) {
+    return articles.value.filter(
+        a => a.type?.toLowerCase() === filterValue.toLowerCase()
     )
   }
 
-  // пока по ТЗ просто три одинаковые карточки-заглушки
-  if (!list.length) {
-    list = [articles[0], articles[0], articles[0]]
+  // Фильтруем по стране
+  if (COUNTRY_SLUGS.includes(slug)) {
+    return articles.value.filter(
+        a => a.countries?.includes(filterValue)
+    )
   }
 
-  return list.slice(0, 3)
+  // Фильтруем по теме
+  if (THEME_SLUGS.includes(slug)) {
+    return articles.value.filter(
+        a => a.themes?.includes(filterValue)
+    )
+  }
+
+  return []
 })
 </script>
 
@@ -124,7 +175,39 @@ const previewArticles = computed(() => {
 
 .tag-page__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 320px));
   gap: var(--paddingL);
+}
+
+.tag-page__loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--paddingXL);
+  color: var(--color-text-muted);
+}
+
+.tag-page__spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: var(--paddingM);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.tag-page__empty {
+  padding: var(--paddingXL);
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 1rem;
 }
 </style>

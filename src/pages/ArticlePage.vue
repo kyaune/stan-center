@@ -1,5 +1,14 @@
 <template>
-  <main class="article">
+  <!-- Полноэкранный лоадер во время загрузки -->
+  <main v-if="!isReady" class="article-loader">
+    <div class="article-loader__content">
+      <div class="article-loader__spinner"></div>
+      <p class="article-loader__text">Загрузка статьи...</p>
+    </div>
+  </main>
+
+  <!-- Контент статьи -->
+  <main v-else class="article">
     <ContentWithSidebar>
       <template #content>
         <article class="article__content">
@@ -11,22 +20,26 @@
                   :to="{ name: articleTagRouteName }"
                   class="article__tag-link"
               >
-                {{ article.tag }}
+                {{ article.type?.charAt(0).toUpperCase() + article.type?.slice(1) }}
               </RouterLink>
-              <span class="article__meta-dot">·</span>
-              <RouterLink
-                  :to="{ name: 'tag', params: { slug: slugMap[article.countries] } }"
-                  class="article__tag-link"
-              >
-                {{ article.countries }}
-              </RouterLink>
-              <span class="article__meta-dot">·</span>
-              <RouterLink
-                  :to="{ name: 'tag', params: { slug: slugMap[article.themes] } }"
-                  class="article__tag-link"
-              >
-                {{ article.themes }}
-              </RouterLink>
+              <template v-if="article.countries && slugMap[article.countries]">
+                <span class="article__meta-dot">·</span>
+                <RouterLink
+                    :to="{ name: 'tag', params: { slug: slugMap[article.countries] } }"
+                    class="article__tag-link"
+                >
+                  {{ article.countries }}
+                </RouterLink>
+              </template>
+              <template v-if="article.themes && slugMap[article.themes]">
+                <span class="article__meta-dot">·</span>
+                <RouterLink
+                    :to="{ name: 'tag', params: { slug: slugMap[article.themes] } }"
+                    class="article__tag-link"
+                >
+                  {{ article.themes }}
+                </RouterLink>
+              </template>
               <span class="article__meta-dot">·</span>
               <span class="article__meta-date">
     {{ articleMetaDate }}
@@ -49,13 +62,19 @@
                 class="article__cover-img"
             />
 
-            <p class="article__cover-caption">
-              Шавкат Мирзиёев и Владимир Путин в Кремле. Иллюстрация: Kremlin.ru
+            <p v-if="article.coverCaption" class="article__cover-caption">
+              {{ article.coverCaption }}
             </p>
           </header>
 
-          <!-- Текст статьи (захардкоженный макет) -->
-          <div class="article__body">
+          <!-- Текст статьи (динамический из WordPress или dummy data) -->
+          <ArticleContent
+            v-if="useWordPress && currentArticle && currentArticle.contentBlocks"
+            :blocks="currentArticle.contentBlocks"
+          />
+          
+          <!-- Fallback: старый статический контент для dummy data -->
+          <div v-else-if="!useWordPress" class="article__body">
             <p class="article__lead">
               Информационно-аналитический телеграм-канал «Стан-Центр» пообщался
               с экспертом из Узбекистана, кандидатом философских наук,
@@ -152,7 +171,7 @@
             <section class="article__related">
 
               <h2 class="article__related-title">
-                Сюжет: <RouterLink class="article__related-title-link" :to="{ name: 'tag', params: { slug: article.story } }">{{ article.story }}</RouterLink>
+<!--                Сюжет: <RouterLink class="article__related-title-link" :to="{ name: 'tag', params: { slug: article.story } }">{{ article.story }}</RouterLink>-->
               </h2>
               <h2 class="article__related-title">
                 Также по теме:
@@ -182,11 +201,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
+import { computed, onMounted, ref } from 'vue'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import ContentWithSidebar from '@/components/layout/ContentWithSidebar.vue'
 import SidebarFilters from '@/components/sidebar/SidebarFilters.vue'
+import ArticleContent from '@/components/articles/ArticleContent.vue'
+import { useWordPressArticles, TYPE_TO_SLUG } from '@/composables/useWordPressArticles'
 import articles from '@/dummydata/articles'
+
+// Props от роутера
+const props = defineProps<{
+  typeSlug?: string
+  id?: string | number
+}>()
 
 const slugMap: Record<string, string> = {
   "Дипломатия": "diplomatiya",
@@ -208,30 +235,59 @@ const slugMap: Record<string, string> = {
 };
 
 const route = useRoute()
+const router = useRouter()
+const { currentArticle, loading, error, fetchArticleByTypeAndId } = useWordPressArticles()
 
+// Режим работы: WordPress или dummy data
+const useWordPress = ref(true)
+
+// Флаг готовности статьи к отображению
+const isReady = ref(false)
+
+// Текущая статья (из WordPress или dummy)
 const article = computed(() => {
-  const id = Number(route.params.id)
+  if (useWordPress.value && currentArticle.value) {
+    return currentArticle.value
+  }
+
+  // Fallback на dummy data
+  const id = Number(props.id || route.params.id)
   const found = articles.find((a) => a.id === id)
   return found ?? articles[0]
 })
 
-const TAG_ROUTE_BY_VALUE: Record<string, string> = {
-  'аналитика': 'analitika',
-  'интервью': 'intervyu',
-  'мнения': 'mneniya',
-  'обзоры': 'obzory',
-}
-
 const articleTagRouteName = computed(() => {
-  const tag = article.value?.tag?.toLowerCase?.()
-  return tag ? TAG_ROUTE_BY_VALUE[tag] : undefined
+  const type = article.value?.type?.toLowerCase?.()
+  return type ? TYPE_TO_SLUG[type] : undefined
 })
 
 const articleMetaDate = computed(() => {
   return article.value?.date || '31 июля 2025 г., 14:52'
 })
 
-const articleMetaDate = '31 июля 2025 г., 14:52'
+// Загрузка статьи из WordPress при монтировании
+onMounted(async () => {
+  const typeSlug = props.typeSlug
+  const id = props.id || route.params.id
+
+  console.log('ArticlePage mounted:', { typeSlug, id, useWordPress: useWordPress.value })
+
+  if (useWordPress.value && typeSlug && id) {
+    const result = await fetchArticleByTypeAndId(typeSlug, Number(id))
+    console.log({result})
+    console.log({currentArticle})
+
+    // Если статья не найдена, редирект на 404
+    if (!result || error.value) {
+      console.warn('Article not found, redirecting to 404:', error.value)
+      await router.replace({ name: 'not-found' })
+      return
+    }
+  }
+
+  // Статья готова к отображению
+  isReady.value = true
+})
 </script>
 
 <style scoped lang="scss">
@@ -258,7 +314,7 @@ p {
 .article__cover-img {
   width: 100%;
   max-height: 420px;
-  object-fit: cover;
+  object-fit: contain;
   //border-radius: var(--radius-md);
   padding-top: 16px;
 }
@@ -456,5 +512,43 @@ p {
 
 .article__related-link:hover {
   text-decoration: underline;
+}
+
+/* Полноэкранный лоадер */
+.article-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: var(--paddingXL);
+  font-family: var(--font-main);
+}
+
+.article-loader__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--paddingM);
+}
+
+.article-loader__spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.article-loader__text {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

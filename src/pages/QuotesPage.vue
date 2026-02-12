@@ -5,31 +5,47 @@
         <section class="quotes-page__content">
           <h1 class="quotes-page__title">Все цитаты</h1>
 
-          <div class="quotes-page__list">
+          <!-- Лоадер -->
+          <div v-if="loading" class="quotes-page__loader">
+            <div class="quotes-page__spinner"></div>
+            <p>Загрузка цитат...</p>
+          </div>
+
+          <!-- Список цитат -->
+          <div v-else-if="quotes.length" class="quotes-page__list">
             <article
                 v-for="quote in quotes"
                 :key="quote.id"
                 class="quotes-page__card"
             >
               <img
-                  :src="quote.avatar"
-                  :alt="`Фото эксперта ${quote.author}`"
+                  v-if="quote.expertImage"
+                  :src="quote.expertImage"
+                  :alt="`Фото ${quote.expertName}`"
                   class="quotes-page__avatar"
               />
+              <div v-else class="quotes-page__avatar quotes-page__avatar--placeholder">
+                {{ quote.expertName?.charAt(0) || '?' }}
+              </div>
 
               <div class="quotes-page__body">
                 <p class="quotes-page__text">
                   «{{ quote.text }}»
                 </p>
                 <p class="quotes-page__author">
-                  {{ quote.author }}
+                  {{ quote.expertName }}
                 </p>
-                <p class="quotes-page__role">
-                  {{ quote.role }}
+                <p v-if="quote.expertPosition" class="quotes-page__role">
+                  {{ quote.expertPosition }}
                 </p>
               </div>
             </article>
           </div>
+
+          <!-- Пустое состояние -->
+          <p v-else class="quotes-page__empty">
+            Цитаты пока не добавлены.
+          </p>
         </section>
       </template>
 
@@ -43,24 +59,9 @@
 <script setup lang="ts">
 import ContentWithSidebar from '@/components/layout/ContentWithSidebar.vue'
 import SidebarFilters from '@/components/sidebar/SidebarFilters.vue'
-import dummyimg from '@/assets/dummyimg.jpg'
+import { useWordPressQuotes } from '@/composables/useWordPressQuotes'
 
-type Quote = {
-  id: number
-  text: string
-  author: string
-  role: string
-  avatar: string
-}
-
-// заглушка: 10 одинаковых цитат
-const quotes: Quote[] = Array.from({ length: 10 }, (_, index) => ({
-  id: index + 1,
-  text: 'Краткая цитата эксперта по теме Центральной Азии.',
-  author: 'Имя Фамилия',
-  role: 'Должность',
-  avatar: dummyimg,
-}))
+const { quotes, loading } = useWordPressQuotes()
 </script>
 
 <style scoped lang="scss">
@@ -134,5 +135,47 @@ const quotes: Quote[] = Array.from({ length: 10 }, (_, index) => ({
   margin: 0;
   font-size: 0.85rem;
   color: var(--color-text-muted);
+}
+
+.quotes-page__avatar--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.quotes-page__loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--paddingXL);
+  color: var(--color-text-muted);
+}
+
+.quotes-page__spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: var(--paddingM);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.quotes-page__empty {
+  padding: var(--paddingXL);
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 1rem;
 }
 </style>

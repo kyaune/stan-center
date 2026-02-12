@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { computed } from "vue";
+import {computed, watch} from "vue";
 import stories from "@/dummydata/stories";
 import StoryCard from "./StoryCard.vue";
+import { useWordPressCategories } from "@/composables/useWordPressCategories"
+
 
 type StoryItem = {
   id: number;
@@ -13,19 +15,7 @@ const props = defineProps<{
   items?: StoryItem[];
 }>();
 
-// const storiesArray = computed(() => {
-//   const first = stories[0];
-//
-//   if (!first) {
-//     return [];
-//   }
-//
-//   return Array.from({ length: 9 }, (_, index) => ({
-//     id: index + 1,
-//     story: story,
-//     img: img,
-//   }));
-// });
+const { categories, loading } = useWordPressCategories()
 </script>
 
 <template>
@@ -36,11 +26,11 @@ const props = defineProps<{
 
     <div class="stories__grid">
       <StoryCard
-          v-for="story in stories"
-          :key="story.id"
-          :id="story.id"
-          :story="story.story"
-          :img="story.img"
+          v-for="category in categories"
+          :key="category.id"
+          :id="category.id"
+          :story="category.name"
+          :img="category.image"
       />
     </div>
   </section>
