@@ -1,7 +1,29 @@
 <script setup lang="ts">
-const videoId = "NZIwXnyY3eQ";
+import { computed } from "vue";
+import { useWordPressYoutubeLink } from "@/composables/useWordPressYoutubeLink";
 
-const youtubeUrl = `https://www.youtube.com/embed/${videoId}`;
+const channelUrl = "https://www.youtube.com/@stan_center";
+
+const { videoUrl, loading } = useWordPressYoutubeLink();
+
+/**
+ * Извлекает video ID из YouTube-ссылки любого формата:
+ * https://www.youtube.com/watch?v=XXXX
+ * https://youtu.be/XXXX
+ * https://www.youtube.com/embed/XXXX
+ */
+function extractVideoId(url: string): string | null {
+  if (!url) return null;
+  const match = url.match(
+    /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+  );
+  return match?.[1] || null;
+}
+
+const embedUrl = computed(() => {
+  const id = extractVideoId(videoUrl.value);
+  return id ? `https://www.youtube.com/embed/${id}` : null;
+});
 </script>
 
 <template>
@@ -11,16 +33,27 @@ const youtubeUrl = `https://www.youtube.com/embed/${videoId}`;
         <h2 class="youtube__title">Видеотека</h2>
       </header>
 
-      <div class="youtube__video-wrapper">
+      <p v-if="loading" class="youtube__loading">Загрузка видео...</p>
+
+      <div v-else-if="embedUrl" class="youtube__video-wrapper">
         <iframe
             class="youtube__iframe"
-            :src="youtubeUrl"
+            :src="embedUrl"
             title="Видео Стан-Центр на YouTube"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen
         />
       </div>
+
+      <a
+        :href="channelUrl"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="youtube__channel-button"
+      >
+        Все видео на YouTube
+      </a>
     </div>
   </section>
 </template>
@@ -74,14 +107,35 @@ const youtubeUrl = `https://www.youtube.com/embed/${videoId}`;
   border: none;
 }
 
-.about__link {
-  font-size: 0.95rem;
-  color: var(--color-primary);
-  text-decoration: none;
-  cursor: pointer;
+.youtube__loading {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  padding: var(--paddingXL) 0;
 }
 
-.about__link:hover {
-  text-decoration: underline;
+.youtube__channel-button {
+  margin-top: var(--paddingL);
+  display: inline-block;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 12px 24px;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+.youtube__channel-button:hover {
+  background-color: var(--color-primary-light);
+  box-shadow: var(--shadow-soft);
+  transform: translateY(-1px);
 }
 </style>

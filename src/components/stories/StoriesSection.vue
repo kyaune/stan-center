@@ -30,6 +30,7 @@ const { categories, loading } = useWordPressCategories()
           :key="category.id"
           :id="category.id"
           :story="category.name"
+          :slug="category.slug"
           :img="category.image"
       />
     </div>

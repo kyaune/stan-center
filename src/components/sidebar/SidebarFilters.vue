@@ -162,9 +162,10 @@ const sidebarQuote = computed(() => {
             «{{ sidebarQuote.text }}»
           </p>
         </div>
-        <p class="sidebar-quote__meta">
-          {{ sidebarQuote.expertName }}<template v-if="sidebarQuote.expertPosition">, {{ sidebarQuote.expertPosition }}</template>
-        </p>
+        <div class="sidebar-quote__meta">
+          <span class="sidebar-quote__author">{{ sidebarQuote.expertName }}</span>
+          <span v-if="sidebarQuote.expertPosition" class="sidebar-quote__role">{{ sidebarQuote.expertPosition }}</span>
+        </div>
       </div>
 
       <p v-else-if="quotesLoading" class="sidebar-quote__loading">
@@ -448,7 +449,19 @@ const sidebarQuote = computed(() => {
 
 .sidebar-quote__meta {
   margin: 0;
-  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-quote__author {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.sidebar-quote__role {
+  font-size: 0.82rem;
   color: var(--color-text-muted);
 }
 

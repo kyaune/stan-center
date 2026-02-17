@@ -45,8 +45,10 @@ import ContentWithSidebar from '@/components/layout/ContentWithSidebar.vue'
 import SidebarFilters from '@/components/sidebar/SidebarFilters.vue'
 import FavouriteArticleCard from '@/components/articles/FavouriteArticleCard.vue'
 import { useWordPressArticles } from '@/composables/useWordPressArticles'
+import { useWordPressCategories } from '@/composables/useWordPressCategories'
 
 const { articles, loading } = useWordPressArticles()
+const { categories } = useWordPressCategories()
 
 // карта: slug → заголовок на русском
 const TAG_TITLES: Record<string, string> = {
@@ -117,36 +119,56 @@ const tagSlug = computed(() => {
   return (route.meta.tagSlug as string) || (route.params.slug as string) || ''
 })
 
-const title = computed(
-    () => TAG_TITLES[tagSlug.value] ?? (tagSlug.value || 'Статьи'),
-)
+// Динамический маппинг: ищем категорию (сюжет) по slug из WordPress
+const categoryBySlug = computed(() => {
+  return categories.value.find(c => c.slug === tagSlug.value) || null
+})
+
+const title = computed(() => {
+  if (TAG_TITLES[tagSlug.value]) {
+    return TAG_TITLES[tagSlug.value]
+  }
+  if (categoryBySlug.value) {
+    return categoryBySlug.value.name
+  }
+  return tagSlug.value || 'Статьи'
+})
 
 const filteredArticles = computed(() => {
   const slug = tagSlug.value
-  const filterValue = SLUG_TO_VALUE[slug]
 
-  if (!filterValue || !articles.value.length) {
+  if (!articles.value.length) {
     return []
   }
 
+  const filterValue = SLUG_TO_VALUE[slug]
+
   // Фильтруем по типу
-  if (TYPE_SLUGS.includes(slug)) {
+  if (TYPE_SLUGS.includes(slug) && filterValue) {
     return articles.value.filter(
         a => a.type?.toLowerCase() === filterValue.toLowerCase()
     )
   }
 
   // Фильтруем по стране
-  if (COUNTRY_SLUGS.includes(slug)) {
+  if (COUNTRY_SLUGS.includes(slug) && filterValue) {
     return articles.value.filter(
         a => a.countries?.includes(filterValue)
     )
   }
 
   // Фильтруем по теме
-  if (THEME_SLUGS.includes(slug)) {
+  if (THEME_SLUGS.includes(slug) && filterValue) {
     return articles.value.filter(
         a => a.themes?.includes(filterValue)
+    )
+  }
+
+  // Фильтруем по сюжету (acf.stories) — сравниваем с русским названием категории
+  if (categoryBySlug.value) {
+    const storyName = categoryBySlug.value.name
+    return articles.value.filter(
+        a => a.story === storyName
     )
   }
 

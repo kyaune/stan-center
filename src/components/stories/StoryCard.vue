@@ -2,6 +2,7 @@
 defineProps<{
   id: number
   story: string
+  slug: string
   img: string
 }>()
 </script>
@@ -9,7 +10,7 @@ defineProps<{
 <template>
   <RouterLink
       class="story-card"
-      :to="{ name: 'tag', params: { slug: story } }"
+      :to="{ name: 'tag', params: { slug: slug } }"
   >
   <article class="story-card">
     <div class="story-card__image-wrapper">
