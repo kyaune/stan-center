@@ -57,6 +57,13 @@ type Expert = {
 import { useWordPressExperts } from "@/composables/useWordPressExperts"
 const { experts, loading } = useWordPressExperts()
 
+// 3 случайных эксперта для сайдбара
+const sidebarExperts = computed(() => {
+  if (experts.value.length <= 3) return experts.value
+  const shuffled = [...experts.value].sort(() => Math.random() - 0.5)
+  return shuffled.slice(0, 3)
+})
+
 import { useWordPressQuotes } from "@/composables/useWordPressQuotes"
 const { quotes, loading: quotesLoading } = useWordPressQuotes()
 
@@ -116,7 +123,7 @@ const sidebarQuote = computed(() => {
 
       <div class="sidebar-experts">
         <RouterLink
-          v-for="expert in experts"
+          v-for="expert in sidebarExperts"
           :key="expert.id"
           :to="{ name: 'expert', params: { slug: expert.slug } }"
           class="sidebar-expert"

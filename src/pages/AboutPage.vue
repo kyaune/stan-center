@@ -2,7 +2,7 @@
   <main class="about">
     <section class="about__inner">
       <h1 class="about__title">О нас</h1>
-      <img src="../assets/tilsit.jpg" class="about__img" alt="">
+      <img src="../assets/img_about.JPG" class="about__img" alt="">
       <p class="about__paragraph">
         Центр по развитию прикладных геополитических исследований
         на евразийском пространстве «Стан» (сокращённо «Стан-Центр»)

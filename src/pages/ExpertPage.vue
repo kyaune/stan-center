@@ -33,7 +33,7 @@
           <!-- Биография -->
           <div v-if="expert?.biography" class="expert-page__biography">
             <h2 class="expert-page__section-title">Биография</h2>
-            <p class="expert-page__biography-text">{{ expert.biography }}</p>
+            <div class="expert-page__biography-text" v-html="expert.biography"></div>
           </div>
 
           <!-- Кнопка назад -->
