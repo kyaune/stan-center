@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import ContentWithSidebar from '@/components/layout/ContentWithSidebar.vue'
 import SidebarFilters from '@/components/sidebar/SidebarFilters.vue'
@@ -174,6 +174,13 @@ const filteredArticles = computed(() => {
 
   return []
 })
+
+// Обновляем заголовок вкладки при изменении title
+watch(title, (newTitle) => {
+  if (newTitle) {
+    document.title = `Стан-Центр — ${newTitle}`
+  }
+}, { immediate: true })
 </script>
 
 <style scoped lang="scss">

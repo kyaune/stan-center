@@ -14,31 +14,32 @@ const routes = [
         path: '/',
         name: 'home',
         component: HomePage,
+        meta: { title: 'Главная' }
     },
     // Страницы списков статей по типу
     {
         path: '/analitika',
         name: 'analitika',
         component: TagPage,
-        meta: { tagSlug: 'analitika' }
+        meta: { tagSlug: 'analitika', title: 'Аналитика' }
     },
     {
         path: '/intervyu',
         name: 'intervyu',
         component: TagPage,
-        meta: { tagSlug: 'intervyu' }
+        meta: { tagSlug: 'intervyu', title: 'Интервью' }
     },
     {
         path: '/mneniya',
         name: 'mneniya',
         component: TagPage,
-        meta: { tagSlug: 'mneniya' }
+        meta: { tagSlug: 'mneniya', title: 'Мнения' }
     },
     {
         path: '/obzory',
         name: 'obzory',
         component: TagPage,
-        meta: { tagSlug: 'obzory' }
+        meta: { tagSlug: 'obzory', title: 'Обзоры' }
     },
     // Страницы отдельных статей по типу и id (acf.id)
     {
@@ -74,6 +75,7 @@ const routes = [
         path: '/experti',
         name: 'experti',
         component: ExpertsPage,
+        meta: { title: 'Эксперты' }
     },
     {
         path: '/experti/:slug',
@@ -85,16 +87,23 @@ const routes = [
         path: '/citati',
         name: 'citati',
         component: QuotesPage,
+        meta: { title: 'Цитаты' }
     },
-    { path: '/o-nas', name: 'o-nas', component: AboutPage },
-    { path: '/contacti', name: 'contacti', component: ContactsPage },
+    { path: '/o-nas', name: 'o-nas', component: AboutPage, meta: { title: 'О нас' } },
+    { path: '/contacti', name: 'contacti', component: ContactsPage, meta: { title: 'Контакты' } },
     // 404 - должен быть последним
-    { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundPage },
+    { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundPage, meta: { title: 'Страница не найдена' } },
 ]
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes,
+})
+
+router.afterEach((to) => {
+    const baseTitle = 'Стан-Центр'
+    const pageTitle = to.meta.title as string | undefined
+    document.title = pageTitle ? `${baseTitle} — ${pageTitle}` : baseTitle
 })
 
 export default router

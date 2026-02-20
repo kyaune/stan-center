@@ -81,6 +81,10 @@ onMounted(async () => {
   }
 
   isReady.value = true
+
+  if (expert.value?.name) {
+    document.title = `Стан-Центр — ${expert.value.name}`
+  }
 })
 </script>
 
@@ -159,9 +163,68 @@ onMounted(async () => {
 .expert-page__biography-text {
   margin: 0;
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.7;
   color: var(--color-text);
-  white-space: pre-wrap;
+
+  :deep(p) {
+    margin: 0 0 1em;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  :deep(a) {
+    color: var(--color-primary);
+    text-decoration: underline;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--color-primary-light);
+    }
+  }
+
+  :deep(strong),
+  :deep(b) {
+    font-weight: 700;
+  }
+
+  :deep(em),
+  :deep(i) {
+    font-style: italic;
+  }
+
+  :deep(ul),
+  :deep(ol) {
+    margin: 0 0 1em;
+    padding-left: 1.5em;
+  }
+
+  :deep(li) {
+    margin-bottom: 0.4em;
+  }
+
+  :deep(blockquote) {
+    margin: 1em 0;
+    padding: 0.75em 1em;
+    border-left: 4px solid var(--color-primary);
+    background: rgba(144, 213, 172, 0.1);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  :deep(h2),
+  :deep(h3),
+  :deep(h4) {
+    margin: 1.2em 0 0.6em;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  :deep(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+  }
 }
 
 .expert-page__back {

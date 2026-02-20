@@ -287,6 +287,12 @@ onMounted(async () => {
 
   // Статья готова к отображению
   isReady.value = true
+
+  // Устанавливаем заголовок вкладки
+  const articleTitle = article.value?.title
+  if (articleTitle) {
+    document.title = `Стан-Центр — ${articleTitle}`
+  }
 })
 </script>
 
