@@ -84,9 +84,6 @@ function getParagraphClass(subtype) {
   }
   return classMap[subtype] || ''
 }
-onMounted(() => {
-  console.log({props})
-})
 
 </script>
 

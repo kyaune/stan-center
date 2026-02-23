@@ -37,7 +37,6 @@ export function useWordPressCategories() {
             categories.value = await Promise.all(
                 filtered.map(transformCategory)
             )
-            // console.log(categories.value)
 
         } catch (e) {
             error.value = e.message

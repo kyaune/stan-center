@@ -71,8 +71,6 @@ const { quotes, loading: quotesLoading } = useWordPressQuotes()
 const randomIndex = Math.floor(Math.random() * 1000)
 const sidebarQuote = computed(() => {
   if (!quotes.value.length) return null
-  console.log({quotes})
-  console.log(quotes.value[randomIndex % quotes.value.length])
   return quotes.value[randomIndex % quotes.value.length]
 })
 </script>

@@ -270,12 +270,9 @@ onMounted(async () => {
   const typeSlug = props.typeSlug
   const id = props.id || route.params.id
 
-  console.log('ArticlePage mounted:', { typeSlug, id, useWordPress: useWordPress.value })
 
   if (useWordPress.value && typeSlug && id) {
     const result = await fetchArticleByTypeAndId(typeSlug, Number(id))
-    console.log({result})
-    console.log({currentArticle})
 
     // Если статья не найдена, редирект на 404
     if (!result || error.value) {

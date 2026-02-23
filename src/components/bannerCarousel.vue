@@ -13,7 +13,6 @@ import {RouterLink} from "vue-router";
 const {articles}  =  useWordPressArticles()
 const modules = [ Autoplay, Navigation, Pagination];
 const slides = computed(() => {
-  console.log({articles})
   return articles.value.filter(a => a.favourite)
 })
 const TAG_ROUTE_BY_VALUE =  {

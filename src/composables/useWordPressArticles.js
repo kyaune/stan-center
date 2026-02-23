@@ -59,7 +59,6 @@ export function useWordPressArticles() {
             }
 
             const data = await response.json()
-            console.log({ data })
             // Стандартный WordPress REST API возвращает массив сразу
             articles.value = Array.isArray(data)
                 ? data.map(transformArticle)
@@ -290,7 +289,6 @@ export function useWordPressArticles() {
     async function fetchArticleByTypeAndId(typeSlug, acfId) {
         loading.value = true
         error.value = null
-        console.log('fetching:', typeSlug, acfId)
 
         try {
             // Если статьи ещё не загружены, загружаем их
@@ -318,7 +316,6 @@ export function useWordPressArticles() {
                 found.coverCaption = await fetchMediaCaption(found.featuredMediaId)
             }
 
-            console.log('found article:', found)
             currentArticle.value = found
             return currentArticle.value
         } catch (err) {
