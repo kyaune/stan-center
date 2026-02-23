@@ -1,17 +1,20 @@
 <template>
   <main class="contacts">
     <section class="contacts__inner">
-      <img src="../assets/tilsit.jpg" class="about__img" alt="">
+      <img src="../assets/tilsit.JPG" class="contacts__img" alt="">
       <h1 class="contacts__title">Контакты</h1>
 
       <p class="contacts__paragraph">
-        Адрес АНО «Стан-Центр»: Калининград, улица Минская, дом № 25,
-        кабинет № 311.
+        Адрес АНО «Стан-Центр»: Калининград, улица Минская, дом № 25, кабинет № 311.
       </p>
 
       <p class="contacts__paragraph">
         Генеральный директор АНО «Стан-Центр»:
         Выползов Андрей Александрович
+      </p>
+      <p class="contacts__paragraph">
+        Шеф-редактор «Стан-Центра»:
+        Макаров Никита Витальевич
       </p>
 
       <p class="contacts__paragraph">
@@ -23,8 +26,8 @@
 
       <p class="contacts__paragraph">
         Электронный адрес:
-        <a class="contacts__link" href="mailto:vypolzov@mail.ru">
-          vypolzov@mail.ru
+        <a class="contacts__link" href="mailto:russia@stan.center">
+          russia@stan.center
         </a>
       </p>
       <div class="contacts__map">
@@ -39,8 +42,12 @@ import YandexMap from "@/components/YandexMap.vue"
 
 <style scoped lang="scss">
 .contacts {
-  padding-block: var(--paddingXL);
+  padding-block: var(--paddingM);
   font-family: var(--font-main);
+
+  @include respond($bp-tablet) {
+    padding-block: var(--paddingXL);
+  }
 }
 
 .contacts__inner {
@@ -48,8 +55,12 @@ import YandexMap from "@/components/YandexMap.vue"
   max-width: 800px;
 }
 
-.about__img {
+.contacts__img {
+  width: 100%;
   max-width: 800px;
+  height: auto;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--paddingL);
 }
 
 .contacts__map {
@@ -65,11 +76,16 @@ import YandexMap from "@/components/YandexMap.vue"
 }
 
 .contacts__title {
-  margin: 0 0 var(--paddingL);
-  font-size: 2rem;
+  margin: 0 0 var(--paddingM);
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.3;
   color: var(--color-text);
+
+  @include respond($bp-tablet) {
+    margin-bottom: var(--paddingL);
+    font-size: 2rem;
+  }
 }
 
 .contacts__paragraph {

@@ -90,13 +90,21 @@
 
 <style scoped lang="scss">
 .about {
-  padding-block: var(--paddingXL);
+  padding-block: var(--paddingM);
   font-family: var(--font-main);
+
+  @include respond($bp-tablet) {
+    padding-block: var(--paddingXL);
+  }
 }
 
 .about__img {
+  width: 100%;
   max-width: 800px;
- }
+  height: auto;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--paddingL);
+}
 
 .about__inner {
   @include container;
@@ -104,11 +112,16 @@
 }
 
 .about__title {
-  margin: 0 0 var(--paddingL);
-  font-size: 2rem;
+  margin: 0 0 var(--paddingM);
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.3;
   color: var(--color-text);
+
+  @include respond($bp-tablet) {
+    margin-bottom: var(--paddingL);
+    font-size: 2rem;
+  }
 }
 
 .about__paragraph {
