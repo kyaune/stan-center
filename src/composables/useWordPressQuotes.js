@@ -18,12 +18,27 @@ export function useWordPressQuotes() {
         error.value = null
 
         try {
-            const res = await fetch(`${API_BASE}/quotes?per_page=100`)
-            if (!res.ok) throw new Error(res.statusText)
+            let allData = []
+            let page = 1
+            let totalPages = 1
 
-            const data = await res.json()
+            while (page <= totalPages) {
+                const res = await fetch(`${API_BASE}/quotes?per_page=100&page=${page}`)
+                if (!res.ok) throw new Error(res.statusText)
+
+                if (page === 1) {
+                    totalPages = parseInt(res.headers.get('X-WP-TotalPages') || '1', 10)
+                }
+
+                const data = await res.json()
+                if (Array.isArray(data)) {
+                    allData = allData.concat(data)
+                }
+                page++
+            }
+
             quotes.value = await Promise.all(
-                data.map(transformQuote)
+                allData.map(transformQuote)
             )
         } catch (e) {
             error.value = e.message

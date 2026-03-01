@@ -47,22 +47,37 @@ export function useWordPressArticles() {
         error.value = null
 
         try {
-            const queryParams = new URLSearchParams({
-                per_page: 100, // Получаем до 100 статей
-                ...params
-            })
+            let allPosts = []
+            let page = 1
+            let totalPages = 1
 
-            const response = await fetch(`${API_BASE}/posts?${queryParams}`)
+            while (page <= totalPages) {
+                const queryParams = new URLSearchParams({
+                    per_page: 100,
+                    page,
+                    ...params
+                })
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`)
+                const response = await fetch(`${API_BASE}/posts?${queryParams}`)
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`)
+                }
+
+                // На первой странице узнаём общее количество страниц
+                if (page === 1) {
+                    totalPages = parseInt(response.headers.get('X-WP-TotalPages') || '1', 10)
+                }
+
+                const data = await response.json()
+                if (Array.isArray(data)) {
+                    allPosts = allPosts.concat(data)
+                }
+
+                page++
             }
 
-            const data = await response.json()
-            // Стандартный WordPress REST API возвращает массив сразу
-            articles.value = Array.isArray(data)
-                ? data.map(transformArticle)
-                : []
+            articles.value = allPosts.map(transformArticle)
             return articles.value
         } catch (err) {
             error.value = err.message

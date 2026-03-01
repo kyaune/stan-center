@@ -22,16 +22,29 @@ export function useWordPressCategories() {
         error.value = null
 
         try {
-            const res = await fetch(`${API_BASE}/categories?per_page=100`)
-            if (!res.ok) {
-                throw new Error(res.statusText)
+            let allData = []
+            let page = 1
+            let totalPages = 1
+
+            while (page <= totalPages) {
+                const res = await fetch(`${API_BASE}/categories?per_page=100&page=${page}`)
+                if (!res.ok) throw new Error(res.statusText)
+
+                if (page === 1) {
+                    totalPages = parseInt(res.headers.get('X-WP-TotalPages') || '1', 10)
+                }
+
+                const data = await res.json()
+                if (Array.isArray(data)) {
+                    allData = allData.concat(data)
+                }
+                page++
             }
 
-            const data = await res.json()
-             // удалить категорию "Uncategorized"
-             const filtered = data.filter(cat =>
-               cat.name !== "Uncategorized" && cat.slug !== "uncategorized"
-             )
+            // удалить категорию "Uncategorized"
+            const filtered = allData.filter(cat =>
+              cat.name !== "Uncategorized" && cat.slug !== "uncategorized"
+            )
 
             // "Расширяем" каждую категорию данными о медиа
             categories.value = await Promise.all(
